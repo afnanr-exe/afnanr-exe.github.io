@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Afnan R. Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #09080e;
+      --surface:   #0d0c16;
+      --surface2:  #11101a;
+      --border:    #1e1c2a;
+      --muted:     #2e2a42;
+      --dim:       #5a5572;
+      --text:      #b8b4cc;
+      --hi:        #e8e4f0;
+      --gold:      #c9a84c;
+      --gold-lo:   #1a150a;
+      --gold-mid:  #4a3510;
+      --green:     #3dba7a;
+      --green-lo:  #091a10;
+      --green-mid: #1a4a2a;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+      --mono:      'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(9,8,14,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      height: 80px; overflow: visible;
+    }
+    .logo {
+      display: flex; align-items: flex-start;
+      text-decoration: none;
+    }
+    .logo img { display: block; height: 64px; width: auto; }
+    .logo-text {
+      font-family: var(--serif); font-size: 22px; font-weight: 600;
+      color: var(--hi); text-decoration: none; letter-spacing: 0.03em;
+    }
+    .logo-text em { color: var(--gold); font-style: italic; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--dim); text-decoration: none; font-size: 13px;
+      font-family: var(--sans); letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--hi); }
+
+    /* ── Wrap ── */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: clamp(40px, 6vw, 72px) 0 clamp(60px, 8vw, 100px);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-inner {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 48px;
+    }
+    .hero-left { flex: 1; min-width: 0; }
+    .hero-right { flex-shrink: 0; width: clamp(260px, 32vw, 420px); display: flex; flex-direction: column; gap: 10px; }
+    .hero-profile { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center top; border-radius: 12px; border: 1px solid var(--border); display: block; }
+    .hero-gif { width: 100%; border-radius: 12px; border: 1px solid var(--border); display: block; }
+    .hero-gif-caption {
+      font-size: 11px; color: var(--dim); font-family: var(--mono);
+      text-align: center; margin-top: 10px; letter-spacing: 0.04em;
+    }
+    .hero-gif-caption a { color: var(--green); text-decoration: none; }
+    .hero-gif-caption a:hover { color: var(--hi); }
+    @media (max-width: 768px) {
+      .hero-inner { flex-direction: column-reverse; gap: 32px; }
+      .hero-right { width: 100%; max-width: 440px; margin: 0 auto; }
+    }
+
+    .eyebrow {
+      font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold); font-family: var(--sans);
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 28px;
+    }
+    .eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(56px, 10vw, 96px);
+      font-weight: 700; color: var(--hi);
+      line-height: 0.95; letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .hero h1 .first-name { font-size: clamp(72px, 13vw, 120px); display: block; line-height: 0.9; }
+    .hero h1 em { font-style: italic; color: var(--green); font-size: clamp(36px, 6vw, 58px); display: block; font-weight: 600; letter-spacing: 0.02em; line-height: 1.1; }
+
+    .hero-role {
+      font-family: var(--serif); font-style: italic;
+      font-size: clamp(22px, 4vw, 36px);
+      color: var(--text); margin-bottom: 32px;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-sub {
+      max-width: 580px; color: var(--hi);
+      font-size: clamp(15px, 2vw, 17px); line-height: 1.85;
+      margin-bottom: 40px; font-family: var(--sans);
+    }
+
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+    .badge {
+      padding: 4px 12px; border-radius: 3px; font-size: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--dim); font-family: var(--mono);
+    }
+    .badge.open {
+      background: var(--gold-lo); border-color: var(--gold-mid);
+      color: var(--gold);
+    }
+    .badge.tech {
+      background: var(--green-lo); border-color: var(--green-mid);
+      color: var(--green);
+    }
+
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 5px;
+      font-family: var(--sans); font-size: 14px; font-weight: 500;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-gold { background: var(--gold); color: #09080e; }
+    .btn-gold:hover { background: #e0bf6a; }
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--dim);
+    }
+    .btn-ghost:hover { border-color: var(--dim); color: var(--hi); }
+
+    /* ── Section ── */
+    .section { padding: clamp(56px, 8vw, 96px) 0; border-bottom: 1px solid var(--border); }
+    .section:last-of-type { border-bottom: none; }
+
+    .sec-label {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--dim); font-family: var(--sans);
+      display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;
+    }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .sec-title {
+      font-family: var(--serif); font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700; color: var(--hi); letter-spacing: -0.5px;
+      line-height: 1.05; margin-bottom: 40px;
+    }
+    .sec-title em { font-style: italic; color: var(--gold); }
+
+    /* ── Filter ── */
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+    .filter-btn {
+      padding: 6px 18px; border-radius: 20px; font-family: var(--sans);
+      font-size: 13px; border: 1px solid var(--border); background: transparent;
+      color: var(--dim); cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--dim); color: var(--hi); }
+    .filter-btn.active {
+      background: var(--gold-lo); border-color: var(--gold-mid); color: var(--gold);
+    }
+
+    /* ── Project grid ── */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .card-thumb {
+      width: calc(100% + 52px);
+      margin: -26px -26px 16px -26px;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 10px 10px 0 0;
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 26px;
+      text-decoration: none;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .project-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: var(--gold); opacity: 0; transition: opacity 0.2s;
+    }
+    .project-card:hover { border-color: var(--muted); transform: translateY(-3px); }
+    .project-card:hover::after { opacity: 1; }
+    .project-card.hidden { display: none; }
+
+    .card-type {
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold); font-family: var(--sans); margin-bottom: 2px;
+    }
+    .card-title {
+      font-family: var(--serif); font-size: 20px; font-weight: 600;
+      color: var(--hi); line-height: 1.25;
+    }
+    .card-desc {
+      font-size: 14px; color: var(--text); line-height: 1.7;
+      font-family: var(--sans); flex: 1;
+    }
+    .card-meta {
+      display: flex; gap: 7px; flex-wrap: wrap;
+      align-items: center; margin-top: 4px;
+    }
+    .chip {
+      font-size: 11px; padding: 3px 8px; border-radius: 3px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--dim); font-family: var(--mono);
+    }
+    .chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+    .card-icons { display: flex; gap: 10px; margin-left: auto; }
+    .icon-badge {
+      font-size: 11px; color: var(--muted);
+      display: flex; align-items: flex-start; gap: 3px;
+      font-family: var(--mono);
+    }
+    .icon-badge.has { color: var(--green); }
+
+    /* ── Contact ── */
+    .contact-block {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; flex-wrap: wrap; gap: 48px;
+    }
+    .contact-left h2 {
+      font-family: var(--serif); font-size: clamp(36px, 6vw, 60px);
+      font-weight: 700; color: var(--hi);
+      letter-spacing: -0.5px; line-height: 1.0; margin-bottom: 14px;
+    }
+    .contact-left h2 em { font-style: italic; color: var(--gold); }
+    .contact-left p { color: var(--text); font-size: 15px; max-width: 360px; }
+    .links-col { display: flex; flex-direction: column; gap: 12px; padding-top: 8px; }
+    .contact-link {
+      display: flex; align-items: flex-start; gap: 12px;
+      text-decoration: none; color: var(--text); font-size: 14px;
+      font-family: var(--sans); transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--hi); }
+    .contact-link .ico {
+      width: 34px; height: 34px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 6px;
+      display: flex; align-items: flex-start; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+      font-family: var(--sans);
+    }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 36px;
+    }
+    .skill-group-label {
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green); font-family: var(--sans); margin-bottom: 14px;
+    }
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .skill-list li {
+      font-size: 14px; color: var(--text); font-family: var(--mono);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .skill-list li::before { content: '▸'; color: var(--border); font-size: 10px; }
+
+    footer {
+      padding: 32px 0; text-align: center;
+      font-size: 12px; color: var(--muted); font-family: var(--sans);
+    }
+
+    /* ── Reveal ── */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s, transform 0.5s; }
+    .reveal.on { opacity: 1; transform: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .wrap { padding: 0 24px; }
+      .nav-inner { padding: 0 24px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { gap: 20px; }
+      .project-grid { grid-template-columns: 1fr 1fr; }
+      .contact-block { flex-direction: column; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 12px; }
+      .project-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .wrap { padding: 0 18px; }
+      .nav-inner { padding: 0 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, * { transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <img src="astar-logo.png" alt="Afnan R" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="resume.pdf" target="_blank">Resume ↗</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="eyebrow">Software · Electrical Engineering · ML</div>
+        <h1><span class="first-name">Afnan</span><em>Rahman.</em></h1>
+        <div class="hero-role">My name would be Bob because I love building things.</div>
+        <p class="hero-sub">
+          Electrical engineer, YouTuber, and guy who put a neural network on a coffee machine. I build at the intersection of hardware and software. Sometimes it works on the first try, usually it doesn't, always ends up on the channel. TMU EE grad, open to work.
+        </p>
+        <p class="hero-sub" style="margin-top: -20px;">
+          My projects span TinyML on microcontrollers, full-stack power grid forecasting with real IESO and AESO data, satellite PCBs, and Android apps shipped to v1.0. I like problems that cross disciplines where the firmware talks to the cloud and the hardware has to actually work.
+        </p>
+        <div class="badges" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:8px;">
+          <span class="badge open" style="text-align:center;">Open to work</span>
+          <span class="badge open" style="text-align:center;">TMU EE 2026</span>
+          <span class="badge open" style="text-align:center;">6 years building</span>
+        </div>
+        <div class="badges">
+          <span class="badge tech">C</span>
+          <span class="badge tech">C++</span>
+          <span class="badge tech">Python</span>
+          <span class="badge tech">MATLAB</span>
+          <span class="badge tech">VHDL</span>
+          <span class="badge tech">Assembly</span>
+          <span class="badge tech">Java</span>
+          <span class="badge tech">Dart</span>
+          <span class="badge tech">JavaScript</span>
+          <span class="badge tech">ESP32</span>
+          <span class="badge tech">Arduino</span>
+          <span class="badge tech">TinyML</span>
+          <span class="badge tech">Edge Impulse</span>
+          <span class="badge tech">BLE</span>
+          <span class="badge tech">PCB Design</span>
+          <span class="badge tech">I2C</span>
+          <span class="badge tech">IMU</span>
+          <span class="badge tech">Flutter</span>
+          <span class="badge tech">Node.js</span>
+          <span class="badge tech">Cadence</span>
+          <span class="badge tech">Quartus II</span>
+          <span class="badge tech">MS Azure</span>
+          <span class="badge tech">Git</span>
+          <span class="badge tech">Multisim</span>
+          <span class="badge tech">EAGLE</span>
+        </div>
+        <div class="cta-row">
+          <a href="mailto:afnan061502@gmail.com" class="btn btn-gold">Get in touch →</a>
+          <a href="https://github.com/afnanr-exe" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+          <a href="resume.pdf" target="_blank" class="btn btn-ghost">Resume ↗</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <img src="profile.jpg" alt="Afnan R" class="hero-profile" />
+        <img src="hero.gif" alt="AI-powered AeroPress project" class="hero-gif" />
+        <div class="hero-gif-caption">
+          AI teaches me to make coffee ·
+          <a href="https://youtu.be/tCtGMfOGuxU?si=szFy-aqJ2O79_W9c" target="_blank">watch on YouTube ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="projects">
+  <div class="wrap">
+    <div class="sec-label">Work</div>
+    <h2 class="sec-title reveal">Selected <em>projects</em></h2>
+
+    <div class="filters reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="software">Software</button>
+      <button class="filter-btn" data-filter="ee">Electrical Eng</button>
+      <button class="filter-btn" data-filter="ml">ML / AI</button>
+    </div>
+
+    <div class="project-grid">
+
+      <a href="projects/afnanpress.html" class="project-card reveal"
+         data-tags="ee,ml,software" data-has-video="true" data-has-report="true">
+        <img src="https://img.youtube.com/vi/tCtGMfOGuxU/maxresdefault.jpg" alt="AfnanPress" class="card-thumb" />
+        <div class="card-type">EE · TinyML · IoT</div>
+        <div class="card-title">AfnanPress</div>
+        <div class="card-desc">AeroPress coffee is inconsistent and hard to repeat. This device clamps onto your brewer, detects each brewing stage automatically using motion sensing and on-device ML, and coaches you in real time toward a better cup.</div>
+        <div class="card-meta">
+          <span class="chip g">C / C++</span>
+          <span class="chip g">TinyML</span>
+          <span class="chip">ESP32</span>
+          <span class="chip">BLE</span>
+          <div class="card-icons">
+            <span class="icon-badge has">▶ vid</span>
+            <span class="icon-badge">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/cofe.html" class="project-card reveal"
+         data-tags="software" data-has-video="true" data-has-report="false">
+        <img src="https://img.youtube.com/vi/7iZekZgnj1M/maxresdefault.jpg" alt="co:fe vocab app" class="card-thumb" />
+        <div class="card-type">Software · Mobile · Flutter</div>
+        <div class="card-title">co:fe</div>
+        <div class="card-desc">I kept reviewing coffee without the words to describe it. So I built a free vocabulary app loaded with coffee terms, one word a day, a daily puzzle, and a quiz that only unlocks when you have actually struggled enough to need it.</div>
+        <div class="card-meta">
+          <span class="chip g">Flutter</span>
+          <span class="chip g">Dart</span>
+          <span class="chip">Android</span>
+          <div class="card-icons">
+            <span class="icon-badge has">▶ vid</span>
+            <span class="icon-badge">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/renewable-forecaster.html" class="project-card reveal"
+         data-tags="ee,ml,software" data-has-video="false" data-has-report="true">
+        <img src="assets/forecaster-forecast.jpg" alt="Renewable Energy Forecaster" class="card-thumb" />
+        <div class="card-type">EE · ML · Full Stack · Capstone</div>
+        <div class="card-title">Renewable Energy Forecaster</div>
+        <div class="card-desc">Grid operators need to know how much wind and solar power is coming. This platform ingests real Canadian grid data from IESO and AESO, trains regression models on it, and forecasts generation 48 hours ahead for any city.</div>
+        <div class="card-meta">
+          <span class="chip g">Python</span>
+          <span class="chip g">FastAPI</span>
+          <span class="chip">Azure</span>
+          <span class="chip">scikit-learn</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/robot-guidance.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · Embedded · Assembly</div>
+        <div class="card-title">Robot Guidance Challenge</div>
+        <div class="card-desc">Programmed the eebot mobile robot in 68HC11 assembly to autonomously navigate a maze: sensor-based heading correction, bumper-triggered reversing, and a finite state machine driving the whole run.</div>
+        <div class="card-meta">
+          <span class="chip g">Assembly</span>
+          <span class="chip">CodeWarrior</span>
+          <span class="chip">FSM</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/p2p-file-sharing.html" class="project-card reveal"
+         data-tags="software" data-has-video="false" data-has-report="true">
+        <div class="card-type">Software · Networking</div>
+        <div class="card-title">P2P File-Sharing Application</div>
+        <div class="card-desc">Built an index-server-and-peers file sharing system from raw sockets: UDP for fast registration and search, TCP for reliable peer-to-peer file transfer.</div>
+        <div class="card-meta">
+          <span class="chip g">C</span>
+          <span class="chip">UDP</span>
+          <span class="chip">TCP</span>
+          <span class="chip">Sockets</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/igbt-inverter.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · Power Electronics</div>
+        <div class="card-title">IGBT Inverter & Motor Drive</div>
+        <div class="card-desc">Characterized a three-phase IGBT inverter under square-wave and PWM switching, then used it to drive a real induction motor under V/F control, comparing measured results against theory.</div>
+        <div class="card-meta">
+          <span class="chip g">Power Electronics</span>
+          <span class="chip">PWM</span>
+          <span class="chip">V/F Control</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/cmos-full-adder.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · IC Design</div>
+        <div class="card-title">CMOS 1-Bit Full Adder</div>
+        <div class="card-desc">Derived, sized with the logical effort method, and laid out a CMOS full adder in Cadence, then verified it end to end with DRC, LVS, and post-layout parasitic extraction.</div>
+        <div class="card-meta">
+          <span class="chip g">Cadence</span>
+          <span class="chip">Logical Effort</span>
+          <span class="chip">DRC / LVS</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/pid-servo-control.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · Control Systems</div>
+        <div class="card-title">PID Servo Compensation</div>
+        <div class="card-desc">Tuned a servo position controller from proportional-only through PID with anti-windup, then validated the tuning on real hardware to see exactly where simulation and reality diverge.</div>
+        <div class="card-meta">
+          <span class="chip g">MATLAB / Simulink</span>
+          <span class="chip">PID</span>
+          <span class="chip">Step Response</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="wrap">
+    <div class="sec-label">Stack</div>
+    <h2 class="sec-title reveal">Tools & <em>technologies</em></h2>
+    <div class="skills-grid">
+      <div class="reveal">
+        <div class="skill-group-label">Languages</div>
+        <ul class="skill-list">
+          <li>Python</li>
+          <li>C / C++</li>
+          <li>MATLAB</li>
+          <li>JavaScript</li>
+          <li>VHDL / Verilog</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-label">ML / AI</div>
+        <ul class="skill-list">
+          <li>PyTorch</li>
+          <li>scikit-learn</li>
+          <li>NumPy / Pandas</li>
+          <li>OpenCV</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-label">Hardware</div>
+        <ul class="skill-list">
+          <li>FPGA design</li>
+          <li>PCB layout</li>
+          <li>STM32 / Arduino</li>
+          <li>Raspberry Pi</li>
+          <li>Oscilloscopes</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="skill-group-label">Tools</div>
+        <ul class="skill-list">
+          <li>Git / GitHub</li>
+          <li>Linux</li>
+          <li>Docker</li>
+          <li>KiCad / Altium</li>
+          <li>Simulink</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="sec-label">Connect</div>
+    <div class="contact-block">
+      <div class="contact-left reveal">
+        <h2>Let's build<br><em>something.</em></h2>
+        <p>Open to full-time roles, internships, and interesting collaborations in SW, EE, or ML.</p>
+      </div>
+      <div class="links-col reveal">
+        <a href="mailto:afnan061502@gmail.com" class="contact-link">
+          <span class="ico">✉</span> afnan061502@gmail.com
+        </a>
+        <a href="https://github.com/afnanr-exe" target="_blank" class="contact-link">
+          <span class="ico">⌥</span> github.com/afnanr-exe
+        </a>
+        <a href="https://www.linkedin.com/in/afnanrah/" target="_blank" class="contact-link">
+          <span class="ico">in</span> linkedin.com/in/afnanrah
+        </a>
+        <a href="https://www.youtube.com/@ASTAR_afnan" target="_blank" class="contact-link">
+          <span class="ico">▶</span> @ASTAR_afnan
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">afnanr-exe.github.io · <span id="yr"></span></div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(card => {
+        const tags = card.dataset.tags || '';
+        card.classList.toggle('hidden', f !== 'all' && !tags.includes(f));
+      });
+    });
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const sibs = [...e.target.parentElement.querySelectorAll('.reveal:not(.on)')];
+        setTimeout(() => e.target.classList.add('on'), sibs.indexOf(e.target) * 60);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

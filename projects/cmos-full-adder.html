@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMOS 1-Bit Full Adder · Report · Afnan R</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#09080e; --surface:#0d0c16; --surface2:#11101a; --border:#1e1c2a;
+      --muted:#2e2a42; --dim:#5a5572; --text:#b8b4cc; --hi:#e8e4f0;
+      --gold:#c9a84c; --gold-lo:#1a150a; --gold-mid:#4a3510;
+      --green:#3dba7a; --green-lo:#091a10; --green-mid:#1a4a2a;
+      --serif:'Cormorant Garamond', Georgia, serif; --sans:'Inter', system-ui, sans-serif; --mono:'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(9,8,14,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 820px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 80px; }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+    .logo img { display: block; height: 64px; width: auto; }
+    .back { color: var(--dim); text-decoration: none; font-size: 13px; font-family: var(--sans); transition: color 0.2s; }
+    .back:hover { color: var(--hi); }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 32px; }
+    .rpt-header { padding: clamp(56px, 9vw, 88px) 0 clamp(40px, 5vw, 56px); border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .rpt-header h1 { font-family: var(--serif); font-size: clamp(32px, 6vw, 52px); font-weight: 700; color: var(--hi); letter-spacing: -0.5px; line-height: 1.05; margin-bottom: 18px; }
+    .rpt-header h1 em { font-style: italic; color: var(--gold); }
+    .rpt-header p.lede { color: var(--text); font-size: clamp(15px, 2vw, 17px); max-width: 660px; line-height: 1.85; margin-bottom: 28px; }
+    .rpt-meta { display: flex; flex-wrap: wrap; gap: 26px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); }
+    .meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+    .meta-val.g { color: var(--green); }
+
+    .report-block { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; margin-top: 24px; transition: border-color 0.2s; max-width: 460px; }
+    .report-block:hover { border-color: var(--muted); }
+    .report-ico { width: 38px; height: 38px; background: var(--gold-lo); border: 1px solid var(--gold-mid); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .report-info { flex: 1; }
+    .report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+    .report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+    .report-arrow { color: var(--dim); font-size: 16px; }
+    .report-block:hover .report-arrow { color: var(--gold); }
+    .rpt-section { padding: clamp(40px, 6vw, 64px) 0; border-bottom: 1px solid var(--border); }
+    .rpt-section:last-of-type { border-bottom: none; }
+    .sec-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .sec-title { font-family: var(--serif); font-size: clamp(22px, 4vw, 32px); font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px; }
+    .sec-title em { font-style: italic; color: var(--gold); }
+    .prose { color: var(--text); font-size: clamp(15px, 2vw, 16px); line-height: 1.85; max-width: 700px; font-family: var(--sans); }
+    .prose + .prose { margin-top: 14px; }
+    .prose strong { color: var(--hi); font-weight: 500; }
+    .callout { background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--gold); border-radius: 6px; padding: 18px 22px; margin: 20px 0; }
+    .callout .callout-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); margin-bottom: 8px; }
+    .callout p { color: var(--text); font-size: 14px; line-height: 1.75; }
+    table.data-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-family: var(--mono); font-size: 13px; }
+    table.data-table th, table.data-table td { border: 1px solid var(--border); padding: 8px 12px; text-align: center; color: var(--text); }
+    table.data-table th { color: var(--gold); font-weight: 500; background: var(--surface); }
+    table.data-table td.g { color: var(--green); }
+    ul.report-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+    ul.report-list li { font-size: 14px; color: var(--text); font-family: var(--sans); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+    ul.report-list li::before { content: '▸'; color: var(--gold); font-size: 11px; margin-top: 4px; flex-shrink: 0; }
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip { font-size: 12px; padding: 4px 11px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--dim); font-family: var(--mono); }
+    .chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+    footer { padding: 32px 0; text-align: center; font-size: 12px; color: var(--muted); font-family: var(--sans); }
+    @media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><img src="../astar-logo.png" alt="Afnan R" /></a>
+    <a href="../index.html" class="back">← All projects</a>
+  </div>
+</nav>
+
+<header class="rpt-header">
+  <div class="wrap">
+    <div class="eyebrow">ELE734 · CMOS Inverter</div>
+    <h1>CMOS 1-Bit <em>Full Adder</em></h1>
+    <p class="lede">Deriving, sizing, and laying out a CMOS full adder from first principles: Boolean logic, logical-effort-based transistor sizing, and post-layout parasitic extraction, compared directly against schematic simulation.</p>
+
+    <div class="rpt-meta">
+      <div class="meta-item"><span class="meta-label">Course</span><span class="meta-val">ELE734 · Lab 4</span></div>
+      <div class="meta-item"><span class="meta-label">Institution</span><span class="meta-val">Toronto Metropolitan University</span></div>
+      <div class="meta-item"><span class="meta-label">Team</span><span class="meta-val">Solo</span></div>
+      <div class="meta-item"><span class="meta-label">Status</span><span class="meta-val g">Complete</span></div>
+    </div>
+
+    <a href="../reports/cmos-full-adder.pdf" target="_blank" class="report-block">
+      <div class="report-ico">📄</div>
+      <div class="report-info">
+        <div class="report-title">CMOS 1-Bit Full Adder · Full Report</div>
+        <div class="report-sub">PDF · 7 pages · Original Document</div>
+      </div>
+      <span class="report-arrow">↗</span>
+    </a>
+  </div>
+</header>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">01: Objective</div>
+    <div class="sec-title">Why this lab <em>exists</em></div>
+    <p class="prose">Two concrete tasks anchored this lab: first, derive the truth table of a 1-bit full adder and the Boolean logic for its Sum (S) and Carry-out (Cout) outputs, then translate that logic into a gate-level schematic. Second, apply the <strong>logical effort method</strong> to size every gate in the adder so it can drive a specific output load capacitance (set individually per student from their ID number) at the Sum output.</p>
+    <p class="prose">The CMOS inverter is the starting point for the whole course: its static and dynamic behaviour generalizes directly to more complex gates like NAND, NOR, and XOR, and ultimately to full subsystems like adders and multipliers, which is exactly the ladder this lab climbs.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">02: Theory</div>
+    <div class="sec-title">From Boolean logic to <em>gate sizing</em></div>
+    <p class="prose">A full adder computes Sum and Carry-out from three inputs (A, B, Cin) per the standard truth table. Once the Boolean expressions for S and Cout are derived, the gate-level implementation is built from basic CMOS primitives, inverters and NAND2 gates, chosen specifically because they compose cleanly into the adder's logic.</p>
+    <p class="prose">The <strong>logical effort method</strong> is the sizing theory at the core of the lab: it models delay through a logic path as the product of a gate's intrinsic delay, its logical effort (a function of the gate's topology), and the electrical effort imposed by whatever capacitance it has to drive. Working backward from a required load capacitance (50 fF plus the last two digits of the student's ID, e.g. 72 fF for an ID ending in 22), each transistor in the path is sized to minimize delay while still being able to drive that specific load.</p>
+    <div class="callout">
+      <div class="callout-label">Why this matters</div>
+      <p>Sizing isn't a formality: an under-sized final stage simply can't drive its target load fast enough, while an over-sized one wastes area and power. Logical effort gives a principled way to hit the target without guesswork.</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">03: Approach</div>
+    <div class="sec-title">Schematic, <em>layout</em>, and verification</div>
+    <p class="prose">With the sized gate-level schematic complete, the design flow proceeded through the standard analog/digital IC verification pipeline:</p>
+    <ul class="report-list">
+      <li><strong>Schematic capture & transient simulation</strong>: verifying correct logical behaviour of S and Cout across input combinations over a 20 ns simulation window.</li>
+      <li><strong>Physical layout</strong>: translating the sized schematic into a real transistor-level layout.</li>
+      <li><strong>DRC (Design Rule Check)</strong>: confirming the layout obeys the fabrication process's geometric rules.</li>
+      <li><strong>LVS (Layout vs. Schematic)</strong>: verifying the layout's extracted netlist matches the original schematic netlist exactly.</li>
+      <li><strong>PEX (Parasitic Extraction)</strong>: pulling real parasitic capacitance and resistance out of the physical layout for a more realistic post-layout simulation.</li>
+      <li><strong>Schematic vs. layout comparison</strong>: re-running the transient simulation on the extracted (PEX) view and comparing timing directly against the original schematic-level simulation.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">04: Conclusion</div>
+    <div class="sec-title">What the lab <em>proved</em></div>
+    <p class="prose">The CMOS 1-bit full adder was successfully designed, sized, laid out, and verified. Applying the logical effort method confirmed the Sum output could efficiently drive its assigned load capacitance, and the full DRC/LVS/PEX flow validated that the physical layout matched the intended logical design.</p>
+    <p class="prose">Comparing schematic and post-layout simulations over the 20 ns test window showed some deviation between the two: expected in practice, since parasitic capacitance and resistance introduced by real layout geometry always shift timing slightly relative to an idealized schematic. These deviations were within the range typical of this design flow, confirming the adder's functionality and performance held up from logic diagram to physical silicon-ready layout.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">Stack</div>
+    <div class="sec-title">Tools & <em>technologies</em></div>
+    <div class="stack-grid">
+      <span class="chip g">Cadence Virtuoso</span>
+      <span class="chip g">CMOS Design</span>
+      <span class="chip">Logical Effort Sizing</span>
+      <span class="chip">DRC / LVS / PEX</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+    &nbsp;·&nbsp; afnanr-exe.github.io
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IGBT Inverter & Induction Motor Drive · Report · Afnan R</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#09080e; --surface:#0d0c16; --surface2:#11101a; --border:#1e1c2a;
+      --muted:#2e2a42; --dim:#5a5572; --text:#b8b4cc; --hi:#e8e4f0;
+      --gold:#c9a84c; --gold-lo:#1a150a; --gold-mid:#4a3510;
+      --green:#3dba7a; --green-lo:#091a10; --green-mid:#1a4a2a;
+      --serif:'Cormorant Garamond', Georgia, serif; --sans:'Inter', system-ui, sans-serif; --mono:'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(9,8,14,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 820px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 80px; }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+    .logo img { display: block; height: 64px; width: auto; }
+    .back { color: var(--dim); text-decoration: none; font-size: 13px; font-family: var(--sans); transition: color 0.2s; }
+    .back:hover { color: var(--hi); }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 32px; }
+    .rpt-header { padding: clamp(56px, 9vw, 88px) 0 clamp(40px, 5vw, 56px); border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .rpt-header h1 { font-family: var(--serif); font-size: clamp(32px, 6vw, 52px); font-weight: 700; color: var(--hi); letter-spacing: -0.5px; line-height: 1.05; margin-bottom: 18px; }
+    .rpt-header h1 em { font-style: italic; color: var(--gold); }
+    .rpt-header p.lede { color: var(--text); font-size: clamp(15px, 2vw, 17px); max-width: 660px; line-height: 1.85; margin-bottom: 28px; }
+    .rpt-meta { display: flex; flex-wrap: wrap; gap: 26px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); }
+    .meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+    .meta-val.g { color: var(--green); }
+
+    .report-block { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; margin-top: 24px; transition: border-color 0.2s; max-width: 460px; }
+    .report-block:hover { border-color: var(--muted); }
+    .report-ico { width: 38px; height: 38px; background: var(--gold-lo); border: 1px solid var(--gold-mid); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .report-info { flex: 1; }
+    .report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+    .report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+    .report-arrow { color: var(--dim); font-size: 16px; }
+    .report-block:hover .report-arrow { color: var(--gold); }
+    .rpt-section { padding: clamp(40px, 6vw, 64px) 0; border-bottom: 1px solid var(--border); }
+    .rpt-section:last-of-type { border-bottom: none; }
+    .sec-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .sec-title { font-family: var(--serif); font-size: clamp(22px, 4vw, 32px); font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px; }
+    .sec-title em { font-style: italic; color: var(--gold); }
+    .prose { color: var(--text); font-size: clamp(15px, 2vw, 16px); line-height: 1.85; max-width: 700px; font-family: var(--sans); }
+    .prose + .prose { margin-top: 14px; }
+    .prose strong { color: var(--hi); font-weight: 500; }
+    .callout { background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--gold); border-radius: 6px; padding: 18px 22px; margin: 20px 0; }
+    .callout .callout-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); margin-bottom: 8px; }
+    .callout p { color: var(--text); font-size: 14px; line-height: 1.75; }
+    .eq { font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 14px 18px; color: var(--green); font-size: 14px; margin: 14px 0; overflow-x: auto; }
+    ul.report-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+    ul.report-list li { font-size: 14px; color: var(--text); font-family: var(--sans); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+    ul.report-list li::before { content: '▸'; color: var(--gold); font-size: 11px; margin-top: 4px; flex-shrink: 0; }
+    table.data-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-family: var(--mono); font-size: 13px; }
+    table.data-table th, table.data-table td { border: 1px solid var(--border); padding: 8px 10px; text-align: center; color: var(--text); }
+    table.data-table th { color: var(--gold); font-weight: 500; background: var(--surface); }
+    table.data-table td.g { color: var(--green); }
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip { font-size: 12px; padding: 4px 11px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--dim); font-family: var(--mono); }
+    .chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+    footer { padding: 32px 0; text-align: center; font-size: 12px; color: var(--muted); font-family: var(--sans); }
+    @media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><img src="../astar-logo.png" alt="Afnan R" /></a>
+    <a href="../index.html" class="back">← All projects</a>
+  </div>
+</nav>
+
+<header class="rpt-header">
+  <div class="wrap">
+    <div class="eyebrow">ELE754 · Power Electronics</div>
+    <h1>IGBT Inverter & <em>Induction Motor Drive</em></h1>
+    <p class="lede">Characterizing a three-phase IGBT inverter under square-wave and PWM operation, then using it to drive a real induction motor under V/F control: connecting switching theory directly to measured motor speed.</p>
+
+    <div class="rpt-meta">
+      <div class="meta-item"><span class="meta-label">Course</span><span class="meta-val">ELE754 · Power Electronics</span></div>
+      <div class="meta-item"><span class="meta-label">Institution</span><span class="meta-val">Toronto Metropolitan University</span></div>
+      <div class="meta-item"><span class="meta-label">Team</span><span class="meta-val">2 · Rahman, Reyes</span></div>
+      <div class="meta-item"><span class="meta-label">Status</span><span class="meta-val g">Complete</span></div>
+    </div>
+
+    <a href="../reports/igbt-inverter.pdf" target="_blank" class="report-block">
+      <div class="report-ico">📄</div>
+      <div class="report-info">
+        <div class="report-title">IGBT Inverter & Motor Drive · Full Report</div>
+        <div class="report-sub">PDF · 16 pages · Original Document</div>
+      </div>
+      <span class="report-arrow">↗</span>
+    </a>
+  </div>
+</header>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">01: Objective</div>
+    <div class="sec-title">Why this lab <em>exists</em></div>
+    <p class="prose">Three-phase inverters are the component that turns DC power into the controlled AC waveforms every motor drive, renewable inverter, and industrial power supply depends on. This lab set out to characterize a three-phase IGBT inverter under two switching strategies, square-wave and sinusoidal PWM, on a resistive load, then apply that same inverter to drive a real LabVolt induction motor under V/F (voltage-over-frequency) control.</p>
+    <p class="prose">Specifically, the goals were to confirm how DC input voltage, inverter frequency, and modulation index each affect the resulting AC output, to see how much a PWM + LC filter combination improves waveform quality over raw square-wave switching, and to verify that V/F control produces near-synchronous motor speeds that scale with frequency.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">02: Theory</div>
+    <div class="sec-title">Switching, <em>modulation</em>, and synchronous speed</div>
+    <p class="prose">The inverter produces AC output by switching each phase between +V<sub>DC</sub>/2 and −V<sub>DC</sub>/2 with a 120° phase shift across the three phases, producing a balanced three-phase waveform. The theoretical line-to-neutral and line-to-line voltages for square-wave operation are:</p>
+    <div class="eq">V_LN,calc = V_DC / 2 &nbsp;&nbsp;(Eq. 1)<br>V_LL,calc = √3 · V_LN,calc &nbsp;&nbsp;(Eq. 2)</div>
+    <p class="prose">Once a modulation index (m<sub>a</sub>) and LC filter are introduced for PWM operation, the output voltage scales proportionally with m<sub>a</sub>:</p>
+    <div class="eq">V_LN,calc = m_a · (V_DC / 2) &nbsp;&nbsp;(Eq. 3)</div>
+    <p class="prose">For the induction motor portion, synchronous speed is governed by the standard motor-drive relationship between supply frequency and pole count:</p>
+    <div class="eq">n_s = 120f / p &nbsp;&nbsp;(Eq. 4): p = 4 poles for this motor</div>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">03: Experiments</div>
+    <div class="sec-title">Three <em>test configurations</em></div>
+    <ul class="report-list">
+      <li><strong>Part A: Square-wave, resistive load:</strong> swept DC input voltage (20–120 V) and inverter frequency (10–60 Hz) with fixed square-wave switching, measuring line-to-line and line-to-neutral voltages at each point.</li>
+      <li><strong>Part B: PWM, resistive load + LC filter:</strong> swept modulation index (0–1.0) and fundamental frequency (10–60 Hz), then re-swept DC voltage with the modulation index fixed at 1.0, to isolate the effect of each variable independently.</li>
+      <li><strong>Part C: Induction motor under V/F control:</strong> swept inverter frequency (10–60 Hz) at constant voltage and measured actual motor speed, comparing it against the calculated synchronous speed from Equation 4.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">04: Results</div>
+    <div class="sec-title">Measured vs. <em>calculated</em></div>
+    <table class="data-table">
+      <tr><th>Test</th><th>Metric</th><th>Avg. % Error</th></tr>
+      <tr><td>Square wave: V<sub>DC</sub> sweep</td><td>V<sub>L-L</sub></td><td class="g">4.90%</td></tr>
+      <tr><td>Square wave: Frequency sweep</td><td>V<sub>L-L</sub></td><td class="g">4.69%</td></tr>
+      <tr><td>PWM: Modulation index sweep</td><td>V<sub>L-L</sub></td><td>23.74%</td></tr>
+      <tr><td>PWM: Frequency sweep (m<sub>a</sub>=1.0)</td><td>V<sub>L-L</sub></td><td>29.95%</td></tr>
+      <tr><td>Induction motor: Speed vs. frequency</td><td>Motor speed</td><td>30.16% (falling with frequency)</td></tr>
+    </table>
+    <p class="prose">Square-wave operation matched theory closely: voltage ratios stayed consistently near √3, confirming correct inverter operation. PWM tests showed a much larger 28–30% gap between measured and calculated fundamental voltage, most likely from switching dead time, IGBT voltage drops, and LC filter limitations at a fixed switching frequency. Motor speed increased linearly with frequency as expected, and the percentage error shrank steadily from 100% at 10 Hz down to 7.7% at 60 Hz, since torque and tracking improve markedly once the drive is out of its low-frequency, low-torque regime.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">05: Conclusion</div>
+    <div class="sec-title">What the lab <em>proved</em></div>
+    <p class="prose">Square-wave operation validated the inverter's fundamental behaviour: output amplitude scaled proportionally with DC input voltage, and the L-L/L-N ratio held at the theoretical √3 across every test point. PWM control clearly improved waveform quality relative to raw square-wave switching, with the modulation index producing the expected linear rise in fundamental voltage, even though absolute measured values ran 28–30% below calculation. This is attributable to switching dead time, semiconductor voltage drops, and filter constraints rather than a flaw in the underlying theory.</p>
+    <p class="prose">The V/F-controlled induction motor confirmed the core promise of variable-frequency drives: motor speed tracked the inverter frequency linearly, staying below synchronous speed by an amount that shrank as frequency rose, which is evidence the drive maintained adequate torque throughout the sweep. Recommended follow-ups included better-isolated probes for small L-L measurements and a higher switching frequency or optimized LC filter to further reduce PWM distortion. Overall, the experiment successfully validated inverter operation, PWM modulation, and induction motor control as an integrated system.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">Stack</div>
+    <div class="sec-title">Tools & <em>technologies</em></div>
+    <div class="stack-grid">
+      <span class="chip g">IGBT Three-Phase Inverter</span>
+      <span class="chip g">PWM Modulation</span>
+      <span class="chip">LabVolt Induction Motor</span>
+      <span class="chip">LC Filtering</span>
+      <span class="chip">V/F Control</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+    &nbsp;·&nbsp; afnanr-exe.github.io
+  </div>
+</footer>
+
+</body>
+</html>

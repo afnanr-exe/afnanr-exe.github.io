@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Title — Afnan R</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #09080e;
+      --surface:   #0d0c16;
+      --surface2:  #11101a;
+      --border:    #1e1c2a;
+      --muted:     #2e2a42;
+      --dim:       #5a5572;
+      --text:      #b8b4cc;
+      --hi:        #e8e4f0;
+      --gold:      #c9a84c;
+      --gold-lo:   #1a150a;
+      --gold-mid:  #4a3510;
+      --green:     #3dba7a;
+      --green-lo:  #091a10;
+      --green-mid: #1a4a2a;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+      --mono:      'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--sans); font-size: 16px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(9,8,14,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 800px; margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 80px; overflow: visible;
+    }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+    .logo img { display: block; height: 64px; width: auto; }
+    .back {
+      color: var(--dim); text-decoration: none; font-size: 13px;
+      font-family: var(--sans); transition: color 0.2s;
+    }
+    .back:hover { color: var(--hi); }
+
+    .wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+
+    .proj-header {
+      padding: clamp(64px, 10vw, 100px) 0 clamp(48px, 6vw, 72px);
+      border-bottom: 1px solid var(--border);
+    }
+    .eyebrow {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold); font-family: var(--sans);
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+
+    .proj-header h1 {
+      font-family: var(--serif); font-size: clamp(38px, 7vw, 64px);
+      font-weight: 700; color: var(--hi); letter-spacing: -0.5px;
+      line-height: 1.0; margin-bottom: 20px;
+    }
+    .proj-header h1 em { font-style: italic; color: var(--gold); }
+    .proj-header p {
+      color: var(--text); font-size: clamp(15px, 2vw, 17px);
+      max-width: 620px; line-height: 1.85; margin-bottom: 32px;
+    }
+
+    .proj-meta {
+      display: flex; flex-wrap: wrap; gap: 28px;
+      padding: 20px 0; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); margin-bottom: 36px;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--dim); font-family: var(--sans);
+    }
+    .meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+    .meta-val.live { color: var(--green); }
+
+    .proj-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 5px;
+      font-family: var(--sans); font-size: 14px; font-weight: 500;
+      text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-gold { background: var(--gold); color: #09080e; }
+    .btn-gold:hover { background: #e0bf6a; }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+    .btn-ghost:hover { border-color: var(--dim); color: var(--hi); }
+
+    .proj-section { padding: clamp(44px, 6vw, 72px) 0; border-bottom: 1px solid var(--border); }
+    .proj-section:last-of-type { border-bottom: none; }
+
+    .sec-label {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--dim); font-family: var(--sans);
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .sec-title {
+      font-family: var(--serif); font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px;
+    }
+    .sec-title em { font-style: italic; color: var(--gold); }
+
+    .prose {
+      color: var(--text); font-size: clamp(15px, 2vw, 16px);
+      line-height: 1.85; max-width: 680px; font-family: var(--sans);
+    }
+    .prose + .prose { margin-top: 16px; }
+
+    .video-wrap {
+      position: relative; width: 100%; aspect-ratio: 16/9;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border); margin: 28px 0;
+      background: var(--surface);
+    }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    .report-block {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 22px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 8px;
+      text-decoration: none; margin-top: 20px; transition: border-color 0.2s;
+    }
+    .report-block:hover { border-color: var(--muted); }
+    .report-ico {
+      width: 40px; height: 40px; background: var(--gold-lo);
+      border: 1px solid var(--gold-mid); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .report-info { flex: 1; }
+    .report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+    .report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+    .report-arrow { color: var(--dim); font-size: 16px; }
+    .report-block:hover .report-arrow { color: var(--gold); }
+
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip {
+      font-size: 12px; padding: 4px 11px; border-radius: 4px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--dim); font-family: var(--mono);
+    }
+    .chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+
+    footer {
+      padding: 32px 0; text-align: center;
+      font-size: 12px; color: var(--muted); font-family: var(--sans);
+    }
+
+    @media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <img src="../astar-logo.png" alt="Afnan R" />
+    </a>
+    <a href="../index.html" class="back">← All projects</a>
+  </div>
+</nav>
+
+<header class="proj-header">
+  <div class="wrap">
+    <div class="eyebrow">EE · Software</div>
+    <!-- CHANGE: project title — wrap a word in <em> for italic gold effect -->
+    <h1>Project <em>One</em></h1>
+    <!-- CHANGE: 2-3 sentence summary -->
+    <p>A concise description of what the project does, the problem it solves, and what makes it interesting. Keep this punchy — it's the first thing a recruiter reads.</p>
+
+    <!-- CHANGE: update meta fields -->
+    <div class="proj-meta">
+      <div class="meta-item">
+        <span class="meta-label">Year</span>
+        <span class="meta-val">2025</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Domain</span>
+        <span class="meta-val">Embedded Systems</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span class="meta-val live">Complete</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Team</span>
+        <span class="meta-val">Solo</span>
+      </div>
+    </div>
+
+    <!-- CHANGE: update links -->
+    <div class="proj-cta">
+      <a href="https://github.com/afnanr-exe/project-one" target="_blank" class="btn btn-gold">View on GitHub ↗</a>
+      <a href="#video" class="btn btn-ghost">Watch video ↓</a>
+      <a href="#report" class="btn btn-ghost">Read report ↓</a>
+    </div>
+  </div>
+</header>
+
+<section class="proj-section">
+  <div class="wrap">
+    <div class="sec-label">Overview</div>
+    <div class="sec-title">What I <em>built</em></div>
+    <!-- CHANGE: project overview -->
+    <p class="prose">Explain what the project is at a deeper level. What was the goal? What context does someone need to understand the work?</p>
+    <p class="prose">You can add a second paragraph here. Describe the core functionality, the architecture, or the key engineering decisions.</p>
+  </div>
+</section>
+
+<section class="proj-section">
+  <div class="wrap">
+    <div class="sec-label">Process</div>
+    <div class="sec-title">Problem & <em>approach</em></div>
+    <!-- CHANGE: your engineering process -->
+    <p class="prose">What specific problem were you solving? Why was it hard? What constraints did you work under — time, hardware, budget, data?</p>
+    <p class="prose">Describe your approach and the key decisions you made. This is where you show your engineering thinking — not just what you built but how and why.</p>
+  </div>
+</section>
+
+<section class="proj-section" id="video">
+  <div class="wrap">
+    <div class="sec-label">YouTube</div>
+    <div class="sec-title">Video <em>walkthrough</em></div>
+    <p class="prose">Brief note on what the video covers — demo, build log, explanation, or tutorial.</p>
+    <!-- CHANGE: replace VIDEO_ID with your YouTube video ID. Delete this block if no video. -->
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/VIDEO_ID"
+        title="Project walkthrough"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<section class="proj-section" id="report">
+  <div class="wrap">
+    <div class="sec-label">Documentation</div>
+    <div class="sec-title">Report</div>
+    <p class="prose">Brief note on what the report covers — methodology, results, analysis.</p>
+    <!-- CHANGE: update PDF path and title. Delete this block if no report. -->
+    <a href="../reports/project-one-report.pdf" target="_blank" class="report-block">
+      <div class="report-ico">📄</div>
+      <div class="report-info">
+        <div class="report-title">Project One — Full Report</div>
+        <div class="report-sub">PDF · Jun 2025</div>
+      </div>
+      <span class="report-arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<section class="proj-section">
+  <div class="wrap">
+    <div class="sec-label">Stack</div>
+    <div class="sec-title">Tools & <em>technologies</em></div>
+    <!-- CHANGE: your actual stack. Add class="g" for main languages/frameworks -->
+    <div class="stack-grid">
+      <span class="chip g">C++</span>
+      <span class="chip g">STM32</span>
+      <span class="chip">MATLAB</span>
+      <span class="chip">KiCad</span>
+      <span class="chip">Git</span>
+      <span class="chip">Linux</span>
+    </div>
+  </div>
+</section>
+
+<section class="proj-section">
+  <div class="wrap">
+    <div class="sec-label">Outcome</div>
+    <div class="sec-title">Results & <em>learnings</em></div>
+    <!-- CHANGE: results — quantify where possible -->
+    <p class="prose">What did the project achieve? Quantify where you can — accuracy, speed, efficiency, performance metrics. Even rough numbers beat nothing.</p>
+    <p class="prose">What would you do differently? What did this teach you? This shows self-awareness, which hiring managers love.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+    &nbsp;·&nbsp; afnanr-exe.github.io
+  </div>
+</footer>
+
+</body>
+</html>

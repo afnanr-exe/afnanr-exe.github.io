@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PID Servo Compensation · Report · Afnan R</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#09080e; --surface:#0d0c16; --surface2:#11101a; --border:#1e1c2a;
+      --muted:#2e2a42; --dim:#5a5572; --text:#b8b4cc; --hi:#e8e4f0;
+      --gold:#c9a84c; --gold-lo:#1a150a; --gold-mid:#4a3510;
+      --green:#3dba7a; --green-lo:#091a10; --green-mid:#1a4a2a;
+      --serif:'Cormorant Garamond', Georgia, serif; --sans:'Inter', system-ui, sans-serif; --mono:'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(9,8,14,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 820px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 80px; }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+    .logo img { display: block; height: 64px; width: auto; }
+    .back { color: var(--dim); text-decoration: none; font-size: 13px; font-family: var(--sans); transition: color 0.2s; }
+    .back:hover { color: var(--hi); }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 32px; }
+    .rpt-header { padding: clamp(56px, 9vw, 88px) 0 clamp(40px, 5vw, 56px); border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .rpt-header h1 { font-family: var(--serif); font-size: clamp(32px, 6vw, 52px); font-weight: 700; color: var(--hi); letter-spacing: -0.5px; line-height: 1.05; margin-bottom: 18px; }
+    .rpt-header h1 em { font-style: italic; color: var(--gold); }
+    .rpt-header p.lede { color: var(--text); font-size: clamp(15px, 2vw, 17px); max-width: 660px; line-height: 1.85; margin-bottom: 28px; }
+    .rpt-meta { display: flex; flex-wrap: wrap; gap: 26px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); }
+    .meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+    .meta-val.g { color: var(--green); }
+
+    .report-block { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; margin-top: 24px; transition: border-color 0.2s; max-width: 460px; }
+    .report-block:hover { border-color: var(--muted); }
+    .report-ico { width: 38px; height: 38px; background: var(--gold-lo); border: 1px solid var(--gold-mid); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .report-info { flex: 1; }
+    .report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+    .report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+    .report-arrow { color: var(--dim); font-size: 16px; }
+    .report-block:hover .report-arrow { color: var(--gold); }
+    .rpt-section { padding: clamp(40px, 6vw, 64px) 0; border-bottom: 1px solid var(--border); }
+    .rpt-section:last-of-type { border-bottom: none; }
+    .sec-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .sec-title { font-family: var(--serif); font-size: clamp(22px, 4vw, 32px); font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px; }
+    .sec-title em { font-style: italic; color: var(--gold); }
+    .prose { color: var(--text); font-size: clamp(15px, 2vw, 16px); line-height: 1.85; max-width: 700px; font-family: var(--sans); }
+    .prose + .prose { margin-top: 14px; }
+    .prose strong { color: var(--hi); font-weight: 500; }
+    .callout { background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--gold); border-radius: 6px; padding: 18px 22px; margin: 20px 0; }
+    .callout .callout-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); margin-bottom: 8px; }
+    .callout p { color: var(--text); font-size: 14px; line-height: 1.75; }
+    ul.report-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+    ul.report-list li { font-size: 14px; color: var(--text); font-family: var(--sans); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+    ul.report-list li::before { content: '▸'; color: var(--gold); font-size: 11px; margin-top: 4px; flex-shrink: 0; }
+    table.data-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-family: var(--mono); font-size: 13px; }
+    table.data-table th, table.data-table td { border: 1px solid var(--border); padding: 8px 10px; text-align: center; color: var(--text); }
+    table.data-table th { color: var(--gold); font-weight: 500; background: var(--surface); }
+    table.data-table td.g { color: var(--green); }
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip { font-size: 12px; padding: 4px 11px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--dim); font-family: var(--mono); }
+    .chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+    footer { padding: 32px 0; text-align: center; font-size: 12px; color: var(--muted); font-family: var(--sans); }
+    @media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><img src="../astar-logo.png" alt="Afnan R" /></a>
+    <a href="../index.html" class="back">← All projects</a>
+  </div>
+</nav>
+
+<header class="rpt-header">
+  <div class="wrap">
+    <div class="eyebrow">ELE639 · Control Systems · Lab 3</div>
+    <h1>PID Servo <em>Compensation</em></h1>
+    <p class="lede">Tuning a servo position controller from an uncompensated proportional-only system up through PID with anti-windup, then confirming on real hardware that simulation never tells the whole story.</p>
+
+    <div class="rpt-meta">
+      <div class="meta-item"><span class="meta-label">Course</span><span class="meta-val">ELE639 · Control Systems</span></div>
+      <div class="meta-item"><span class="meta-label">Institution</span><span class="meta-val">Toronto Metropolitan University</span></div>
+      <div class="meta-item"><span class="meta-label">Team</span><span class="meta-val">4 · Sharif, Kwak, Rahman, Lin</span></div>
+      <div class="meta-item"><span class="meta-label">Status</span><span class="meta-val g">Complete</span></div>
+    </div>
+
+    <a href="../reports/pid-servo-control.pdf" target="_blank" class="report-block">
+      <div class="report-ico">📄</div>
+      <div class="report-info">
+        <div class="report-title">PID Servo Compensation · Full Report</div>
+        <div class="report-sub">PDF · 23 pages · Original Document</div>
+      </div>
+      <span class="report-arrow">↗</span>
+    </a>
+  </div>
+</header>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">01: Objective</div>
+    <div class="sec-title">Why this lab <em>exists</em></div>
+    <p class="prose">The goal was to take a servo position system through the standard control-design progression: characterize it uncompensated, add proportional (P) control, then full PID, then PID with anti-windup (PID+A), first entirely in simulation, then repeated on a real servo module. Along the way, the lab tracked four classic step-response specifications: rise time, percent overshoot, settling time, and steady-state error, both inside the system's nominal ±50° range and well outside it at ±200° and ±20°.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">02: Theory</div>
+    <div class="sec-title">P vs. PID vs. <em>PID+Anti-windup</em></div>
+    <p class="prose">Each controller stage trades off the same four specifications differently:</p>
+    <ul class="report-list">
+      <li><strong>Proportional (P) only</strong>: increasing K<sub>p</sub> improves steady-state error, settling time, and rise time, but always at the cost of more overshoot. Decreasing K<sub>p</sub> below 1 does the opposite: less overshoot and faster settling, but slower rise time and worse steady-state error. Below a certain K<sub>p</sub>, dead-zone effects appear and the servo stops responding to the input altogether.</li>
+      <li><strong>PID</strong>: adding integral action (T<sub>i</sub>) drives steady-state error toward zero at the cost of a slower response and more overshoot; adding derivative action (T<sub>d</sub>) reduces overshoot and improves stability but amplifies noise. Tuning was done by trial and error, converging on K<sub>p</sub>=0.96, T<sub>i</sub>=2.4, T<sub>d</sub>=0.01 as the best-performing combination.</li>
+      <li><strong>PID+Anti-windup (PID+A)</strong>: adds a correction term to prevent the integral term from "winding up" during saturation. In this lab it showed little measurable improvement over plain PID within the nominal range, but proved more relevant once inputs pushed the system into saturation outside that range.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">03: Results</div>
+    <div class="sec-title">Inside vs. <em>outside</em> the nominal range</div>
+    <table class="data-table">
+      <tr><th>System</th><th>Range</th><th>Rise Time</th><th>% OS</th><th>Settling Time</th><th>e<sub>ss</sub> (%)</th></tr>
+      <tr><td>Uncompensated (K<sub>p</sub>=1)</td><td>±50°</td><td>0.0524 s</td><td>5.23%</td><td>0.2303 s</td><td>2.33%</td></tr>
+      <tr><td>Best PID (K<sub>p</sub>=0.96, T<sub>i</sub>=2.4, T<sub>d</sub>=0.01)</td><td>±50°</td><td class="g">0.0753 s</td><td class="g">0%</td><td class="g">0.1760 s</td><td class="g">≈0.26%</td></tr>
+      <tr><td>Best PID (real servo module)</td><td>±20°</td><td>0.076 s</td><td>0%</td><td>0.168 s</td><td>0.612%</td></tr>
+      <tr><td>Best PID (real servo module)</td><td>±200°</td><td>0.1876 s</td><td>0.202%</td><td>0.487 s</td><td>1.034%</td></tr>
+    </table>
+    <p class="prose">Inside the nominal range, the tuned PID controller essentially eliminated overshoot and steady-state error compared to the uncompensated system, at the acceptable cost of a slightly slower rise time. Pushed outside the nominal range to ±200°, both compensated and uncompensated systems suffered from actuator saturation and nonlinear behaviour that no amount of linear PID tuning could fully correct: rise time increased, and at the extreme the output became triangular rather than converging to a constant value, meaning steady-state error and settling time were no longer strictly definable.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">04: Simulation vs. Real Hardware</div>
+    <div class="sec-title">Where the <em>model breaks down</em></div>
+    <p class="prose">Repeating every test on the physical servo module was the most important part of the lab. Simulated models are idealized and linear: they don't include friction, electrical noise, mechanical backlash, dead zones, or actuator saturation, so their responses look smoother and more predictable than reality.</p>
+    <div class="callout">
+      <div class="callout-label">Key observation</div>
+      <p>At high K<sub>p</sub>, the real servo oscillated and failed to decay cleanly, unlike the still-smooth simulated response under the same gain: direct evidence of saturation limiting real-world tracking. At very low K<sub>p</sub>, both systems showed dead-zone effects, but the physical module needed a distinctly higher minimum input to move at all, and consistently responded slower than simulation due to real mechanical and electrical delay.</p>
+    </div>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">05: Conclusion</div>
+    <div class="sec-title">What the lab <em>proved</em></div>
+    <p class="prose">PID compensation clearly outperformed proportional-only and uncompensated control within the servo's nominal operating range, essentially eliminating overshoot and steady-state error at a small, acceptable cost to rise time. PID+Anti-windup offered little additional benefit at normal operating amplitudes but became more meaningful once the system was pushed into saturation.</p>
+    <p class="prose">The most important takeaway, though, wasn't about tuning constants: it was that simulation and hardware disagree in specific, physically meaningful ways. Real friction, backlash, and saturation effects mean a controller validated only in simulation isn't validated at all. Final controller acceptance has to happen on the physical system, where non-ideal effects are actually present and performance targets can be realistically confirmed.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">Stack</div>
+    <div class="sec-title">Tools & <em>technologies</em></div>
+    <div class="stack-grid">
+      <span class="chip g">MATLAB / Simulink</span>
+      <span class="chip g">PID Control</span>
+      <span class="chip">Servo Module Hardware</span>
+      <span class="chip">Step Response Analysis</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+    &nbsp;·&nbsp; afnanr-exe.github.io
+  </div>
+</footer>
+
+</body>
+</html>

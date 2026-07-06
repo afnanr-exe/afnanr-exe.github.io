@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P2P File-Sharing Application · Report · Afnan R</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #09080e;
+      --surface:   #0d0c16;
+      --surface2:  #11101a;
+      --border:    #1e1c2a;
+      --muted:     #2e2a42;
+      --dim:       #5a5572;
+      --text:      #b8b4cc;
+      --hi:        #e8e4f0;
+      --gold:      #c9a84c;
+      --gold-lo:   #1a150a;
+      --gold-mid:  #4a3510;
+      --green:     #3dba7a;
+      --green-lo:  #091a10;
+      --green-mid: #1a4a2a;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --sans:      'Inter', system-ui, sans-serif;
+      --mono:      'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(9,8,14,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 820px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 80px; }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+    .logo img { display: block; height: 64px; width: auto; }
+    .back { color: var(--dim); text-decoration: none; font-size: 13px; font-family: var(--sans); transition: color 0.2s; }
+    .back:hover { color: var(--hi); }
+
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 32px; }
+
+    .rpt-header { padding: clamp(56px, 9vw, 88px) 0 clamp(40px, 5vw, 56px); border-bottom: 1px solid var(--border); }
+    .eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .rpt-header h1 { font-family: var(--serif); font-size: clamp(32px, 6vw, 52px); font-weight: 700; color: var(--hi); letter-spacing: -0.5px; line-height: 1.05; margin-bottom: 18px; }
+    .rpt-header h1 em { font-style: italic; color: var(--gold); }
+    .rpt-header p.lede { color: var(--text); font-size: clamp(15px, 2vw, 17px); max-width: 660px; line-height: 1.85; margin-bottom: 28px; }
+
+    .rpt-meta { display: flex; flex-wrap: wrap; gap: 26px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); }
+    .meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+    .meta-val.g { color: var(--green); }
+
+    .report-block { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; margin-top: 24px; transition: border-color 0.2s; max-width: 460px; }
+    .report-block:hover { border-color: var(--muted); }
+    .report-ico { width: 38px; height: 38px; background: var(--gold-lo); border: 1px solid var(--gold-mid); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .report-info { flex: 1; }
+    .report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+    .report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+    .report-arrow { color: var(--dim); font-size: 16px; }
+    .report-block:hover .report-arrow { color: var(--gold); }
+
+    .rpt-section { padding: clamp(40px, 6vw, 64px) 0; border-bottom: 1px solid var(--border); }
+    .rpt-section:last-of-type { border-bottom: none; }
+    .sec-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); font-family: var(--sans); display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .sec-title { font-family: var(--serif); font-size: clamp(22px, 4vw, 32px); font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px; }
+    .sec-title em { font-style: italic; color: var(--gold); }
+
+    .prose { color: var(--text); font-size: clamp(15px, 2vw, 16px); line-height: 1.85; max-width: 700px; font-family: var(--sans); }
+    .prose + .prose { margin-top: 14px; }
+    .prose strong { color: var(--hi); font-weight: 500; }
+
+    .callout { background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--gold); border-radius: 6px; padding: 18px 22px; margin: 20px 0; }
+    .callout .callout-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); margin-bottom: 8px; }
+    .callout p { color: var(--text); font-size: 14px; line-height: 1.75; }
+
+    .code-block { font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; color: var(--green); font-size: 13px; margin: 16px 0; overflow-x: auto; line-height: 1.6; white-space: pre; }
+
+    ul.report-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+    ul.report-list li { font-size: 14px; color: var(--text); font-family: var(--sans); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+    ul.report-list li::before { content: '▸'; color: var(--gold); font-size: 11px; margin-top: 4px; flex-shrink: 0; }
+
+    .split-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 20px 0; }
+    @media (max-width: 640px) { .split-cols { grid-template-columns: 1fr; } }
+    .col-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+    .col-block.strength { border-left: 2px solid var(--green); }
+    .col-block.weakness { border-left: 2px solid var(--gold); }
+    .col-block h4 { font-family: var(--sans); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .col-block.strength h4 { color: var(--green); }
+    .col-block.weakness h4 { color: var(--gold); }
+    .col-block ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .col-block li { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip { font-size: 12px; padding: 4px 11px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--dim); font-family: var(--mono); }
+    .chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+
+    footer { padding: 32px 0; text-align: center; font-size: 12px; color: var(--muted); font-family: var(--sans); }
+    @media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><img src="../astar-logo.png" alt="Afnan R" /></a>
+    <a href="../index.html" class="back">← All projects</a>
+  </div>
+</nav>
+
+<header class="rpt-header">
+  <div class="wrap">
+    <div class="eyebrow">COE528 · Computer Networks</div>
+    <h1>P2P File-Sharing <em>Application</em></h1>
+    <p class="lede">An index-server-and-peers file sharing system built from raw sockets: UDP for fast control messaging, TCP for reliable file transfer, in the classic Napster-style decentralized-content, centralized-lookup pattern.</p>
+
+    <div class="rpt-meta">
+      <div class="meta-item"><span class="meta-label">Course</span><span class="meta-val">COE528 · Computer Networks</span></div>
+      <div class="meta-item"><span class="meta-label">Institution</span><span class="meta-val">Toronto Metropolitan University</span></div>
+      <div class="meta-item"><span class="meta-label">Team</span><span class="meta-val">2 · Rahman, Kane</span></div>
+      <div class="meta-item"><span class="meta-label">Status</span><span class="meta-val g">Complete</span></div>
+    </div>
+
+    <a href="../reports/p2p-file-sharing.pdf" target="_blank" class="report-block">
+      <div class="report-ico">📄</div>
+      <div class="report-info">
+        <div class="report-title">P2P File-Sharing · Full Report</div>
+        <div class="report-sub">PDF · 18 pages · Original Document</div>
+      </div>
+      <span class="report-arrow">↗</span>
+    </a>
+  </div>
+</header>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">01: Objective</div>
+    <div class="sec-title">Why this project <em>exists</em></div>
+    <p class="prose">Peer-to-peer networking divides work across equally-privileged peers instead of relying on one central content host. The objective here was to build a working P2P application made of an index server plus a network of peers, capable of registering content, discovering it, downloading it, and removing it from the network again.</p>
+    <p class="prose">Each peer can act as a content server for files it owns and a content client for files it wants, at the same time: which is the property that makes a P2P network more resilient and versatile than a single client-server model.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">02: Theory</div>
+    <div class="sec-title">Two protocols, <em>two jobs</em></div>
+    <p class="prose">The design splits responsibilities cleanly along protocol lines, matching the right transport to the right kind of traffic:</p>
+    <ul class="report-list">
+      <li><strong>UDP for control messages</strong>: registration, search, deregistration, and listing all go through the index server over UDP. These are small, latency-sensitive requests where occasionally losing a packet is an acceptable tradeoff for speed and low overhead.</li>
+      <li><strong>TCP for file transfer</strong>: once a peer's address is found via the index server, the actual file transfer happens directly peer-to-peer over TCP, so large content moves reliably in ordered chunks.</li>
+    </ul>
+    <p class="prose">Every message is wrapped in a simple <strong>PDU (Protocol Data Unit)</strong> struct: a one-character type field (<code>R</code> register, <code>S</code> search, <code>T</code> deregister, <code>O</code> list-online, <code>D</code> download, <code>Q</code> quit) plus a fixed-size data payload. The index server holds three parallel arrays (usernames, filenames, and addresses) that together form its content directory.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">03: Implementation</div>
+    <div class="sec-title">Index server & <em>peer logic</em></div>
+    <p class="prose">The <strong>index server</strong> runs a single UDP receive loop, dispatching on PDU type: registration checks for a free slot in the fixed-size library arrays before storing the entry, search scans the file-name array for a match and returns the owning peer's address, deregistration shifts all later entries left by one to close the gap, and listing concatenates every known filename into a single response.</p>
+    <div class="code-block">if (rpdu.type == 'S') {
+  for (; i &lt; LIST_SIZE; i++)
+    if (strcmp(search_tokens[1], movie_library[i]) == 0) break;
+  if (i &lt; LIST_SIZE) { strcat(spdu.data, "\n"); strcat(spdu.data, address_library[i]); }
+  else { spdu.type = 'E'; strcpy(spdu.data, "Movie not found"); }
+}</div>
+    <p class="prose">The <strong>peer/client program</strong> is dual-role: it sends UDP requests to the index server to register, search, list, and deregister its own files, and it separately opens a TCP listener so other peers can connect and pull files directly. On a download request, the client resolves the target peer's address from the index server's search response, opens a TCP socket to that peer, and streams the file to disk in fixed-size chunks using a read/write loop.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">04: Observations & Analysis</div>
+    <div class="sec-title">Strengths vs. <em>weaknesses</em></div>
+    <p class="prose">Testing registration, search, listing, download, and quit confirmed the protocol works as designed. The design analysis surfaced a clear tradeoff profile:</p>
+    <div class="split-cols">
+      <div class="col-block strength">
+        <h4>Strengths</h4>
+        <ul>
+          <li>Clean separation of control (UDP) vs. data (TCP) simplifies each code path</li>
+          <li>UDP avoids connection-setup overhead for quick control messages</li>
+          <li>Modular operations (register, search, download, deregister) are easy to extend</li>
+        </ul>
+      </div>
+      <div class="col-block weakness">
+        <h4>Weaknesses</h4>
+        <ul>
+          <li>Minimal error handling: no retry/retransmission on UDP packet loss</li>
+          <li>Fixed-size arrays (<code>LIST_SIZE</code>) cap the number of files/users, hurting scalability</li>
+          <li>No encryption or authentication: usernames and filenames travel in plain text</li>
+          <li>Server processes requests sequentially, which could bottleneck under load</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">05: Conclusion</div>
+    <div class="sec-title">What the project <em>proved</em></div>
+    <p class="prose">The client-server implementation successfully demonstrates a working file-sharing protocol with a clean split between UDP control traffic and TCP data transfer. It's simple enough to reason about end to end, which was the point of the exercise: but the same simplicity is exactly what limits it in a production setting.</p>
+    <p class="prose">To move this from a lab exercise to something robust, the clear next steps are: retry/timeout logic for lost UDP packets, dynamic data structures (linked lists or a real key-value store) in place of fixed arrays, TLS or a lightweight auth handshake for security, and either multithreading or async I/O on the server to handle concurrent peers without blocking. As delivered, it's a solid, working foundation for exactly those improvements.</p>
+  </div>
+</section>
+
+<section class="rpt-section">
+  <div class="wrap">
+    <div class="sec-label">Stack</div>
+    <div class="sec-title">Tools & <em>technologies</em></div>
+    <div class="stack-grid">
+      <span class="chip g">C</span>
+      <span class="chip g">Berkeley Sockets</span>
+      <span class="chip">UDP</span>
+      <span class="chip">TCP</span>
+      <span class="chip">Linux</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+    &nbsp;·&nbsp; afnanr-exe.github.io
+  </div>
+</footer>
+
+</body>
+</html>
