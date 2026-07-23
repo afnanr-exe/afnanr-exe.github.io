@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Construction Safety Data Automation Pipeline — Afnan R</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #09080e;
+--surface: #0d0c16;
+--surface2: #11101a;
+--border: #1e1c2a;
+--muted: #2e2a42;
+--dim: #5a5572;
+--text: #b8b4cc;
+--hi: #e8e4f0;
+--gold: #c9a84c;
+--gold-lo: #1a150a;
+--gold-mid: #4a3510;
+--green: #3dba7a;
+--green-lo: #091a10;
+--green-mid: #1a4a2a;
+--serif: 'Cormorant Garamond', Georgia, serif;
+--sans: 'Inter', system-ui, sans-serif;
+--mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+background: var(--bg); color: var(--text);
+font-family: var(--sans); font-size: 16px; line-height: 1.75;
+-webkit-font-smoothing: antialiased;
+}
+nav {
+position: sticky; top: 0; z-index: 100;
+background: rgba(9,8,14,0.92); backdrop-filter: blur(16px);
+border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+max-width: 800px; margin: 0 auto; padding: 0 32px;
+display: flex; align-items: center; justify-content: space-between;
+height: 80px; overflow: visible;
+}
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { display: block; height: 64px; width: auto; }
+.back {
+color: var(--dim); text-decoration: none; font-size: 13px;
+font-family: var(--sans); transition: color 0.2s;
+}
+.back:hover { color: var(--hi); }
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+.proj-header {
+padding: clamp(64px, 10vw, 100px) 0 clamp(48px, 6vw, 72px);
+border-bottom: 1px solid var(--border);
+}
+.eyebrow {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--gold); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.proj-header h1 {
+font-family: var(--serif); font-size: clamp(38px, 7vw, 64px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.5px;
+line-height: 1.0; margin-bottom: 20px;
+}
+.proj-header h1 em { font-style: italic; color: var(--gold); }
+.proj-header p {
+color: var(--text); font-size: clamp(15px, 2vw, 17px);
+max-width: 620px; line-height: 1.85; margin-bottom: 32px;
+}
+.proj-meta {
+display: flex; flex-wrap: wrap; gap: 28px;
+padding: 20px 0; border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border); margin-bottom: 36px;
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label {
+font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+}
+.meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+.meta-val.live { color: var(--green); }
+.proj-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+display: inline-flex; align-items: center; gap: 8px;
+padding: 10px 20px; border-radius: 5px;
+font-family: var(--sans); font-size: 14px; font-weight: 500;
+text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;
+}
+.btn-gold { background: var(--gold); color: #09080e; }
+.btn-gold:hover { background: #e0bf6a; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+.btn-ghost:hover { border-color: var(--dim); color: var(--hi); }
+.proj-section { padding: clamp(44px, 6vw, 72px) 0; border-bottom: 1px solid var(--border); }
+.proj-section:last-of-type { border-bottom: none; }
+.sec-label {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-title {
+font-family: var(--serif); font-size: clamp(24px, 4vw, 36px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px;
+}
+.sec-title em { font-style: italic; color: var(--gold); }
+.prose {
+color: var(--text); font-size: clamp(15px, 2vw, 16px);
+line-height: 1.85; max-width: 680px; font-family: var(--sans);
+}
+.prose + .prose { margin-top: 16px; }
+.stat-grid {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+gap: 16px; margin-top: 24px;
+}
+.stat-box {
+background: var(--surface); border: 1px solid var(--border);
+border-radius: 8px; padding: 16px 18px;
+}
+.stat-num { font-family: var(--mono); font-size: 22px; color: var(--gold); margin-bottom: 4px; }
+.stat-label { font-size: 11px; color: var(--dim); font-family: var(--sans); }
+.report-block {
+display: flex; align-items: center; gap: 16px;
+padding: 18px 22px; background: var(--surface);
+border: 1px solid var(--border); border-radius: 8px;
+text-decoration: none; margin-top: 20px; transition: border-color 0.2s;
+}
+.report-block:hover { border-color: var(--muted); }
+.report-ico {
+width: 40px; height: 40px; background: var(--gold-lo);
+border: 1px solid var(--gold-mid); border-radius: 6px;
+display: flex; align-items: center; justify-content: center;
+font-size: 18px; flex-shrink: 0;
+}
+.report-info { flex: 1; }
+.report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+.report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+.report-arrow { color: var(--dim); font-size: 16px; }
+.report-block:hover .report-arrow { color: var(--gold); }
+.stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+font-size: 12px; padding: 4px 11px; border-radius: 4px;
+background: var(--surface); border: 1px solid var(--border);
+color: var(--dim); font-family: var(--mono);
+}
+.chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+footer {
+padding: 32px 0; text-align: center;
+font-size: 12px; color: var(--muted); font-family: var(--sans);
+}
+@media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="../index.html" class="logo">
+<img src="../astar-logo.png" alt="Afnan R" />
+</a>
+<a href="../index.html" class="back">← All projects</a>
+</div>
+</nav>
+
+<header class="proj-header">
+<div class="wrap">
+<div class="eyebrow">Data & Systems Analyst · Python · SQL</div>
+<h1>Construction Safety <em>Data Automation</em> Pipeline</h1>
+<p>An end-to-end Python + SQL pipeline that automates a real EHS compliance reporting workflow for the construction industry — real government data, a normalized SQL database, and a single-command Excel report replacing hours of manual work.</p>
+
+<div class="proj-meta">
+<div class="meta-item">
+<span class="meta-label">Year</span>
+<span class="meta-val">2026</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Domain</span>
+<span class="meta-val">Data Automation / Safety Analytics</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Status</span>
+<span class="meta-val live">Complete</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Team</span>
+<span class="meta-val">Solo</span>
+</div>
+</div>
+
+<div class="proj-cta">
+<a href="https://github.com/afnanr-exe/Construction-Safety-Maintenance-Data-Automation-Pipeline" target="_blank" class="btn btn-gold">View on GitHub ↗</a>
+<a href="#report" class="btn btn-ghost">See the report ↓</a>
+</div>
+</div>
+</header>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Overview</div>
+<div class="sec-title">What I <em>built</em></div>
+<p class="prose">Construction EHS (Environmental Health & Safety) teams typically pull OSHA enforcement data by hand and rebuild a compliance summary in Excel every reporting period — slow, repetitive, and error-prone. This project automates that entire workflow end to end: sourcing real government safety data, cleaning and modeling it, loading it into a relational database, and auto-generating a formatted compliance report with a single script run.</p>
+<p class="prose">This is the third project in a three-part Data & Systems Analyst portfolio, and it's deliberately built with a distinct tool stack from the other two — plain Python and SQL, no BI GUI tool — to demonstrate automation engineering rather than dashboard visualization.</p>
+
+<div class="stat-grid">
+<div class="stat-box"><div class="stat-num">151,007</div><div class="stat-label">Inspections processed</div></div>
+<div class="stat-box"><div class="stat-num">256,146</div><div class="stat-label">Violations processed</div></div>
+<div class="stat-box"><div class="stat-num">$668M</div><div class="stat-label">Total penalties assessed</div></div>
+<div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Orphaned records (100% referential integrity)</div></div>
+</div>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Data</div>
+<div class="sec-title">Sourcing & <em>validation</em></div>
+<p class="prose">Sourced real, verified-live data from the U.S. Department of Labor's OSHA Enforcement Data via the DOL Open Data Portal — filtered to the Construction sector (NAICS prefix 23) and the last 5 years of inspections. Two joined tables: inspection-level case detail and citation-level violation detail.</p>
+<p class="prose">Before writing any transform logic, I documented the grain, nullability, and meaning of every field in a data dictionary — a lesson learned the hard way on a prior BI project where undocumented field grain caused downstream modeling errors.</p>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Pipeline</div>
+<div class="sec-title">Clean, model, <em>automate</em></div>
+<p class="prose">Cleaned and transformed the raw data with pandas — fixing dtypes, dropping columns confirmed 100% null via EDA, decoding coded fields into readable labels, and deriving fields like violation severity rank. Every stage is quality-checked: pre-transform null/duplicate profiling, and post-transform validation of referential integrity, label coverage, and value sanity.</p>
+<p class="prose">The cleaned data loads into a normalized SQLite database — two tables (inspections, violations) with proper primary/foreign keys and indexes, not a flat DataFrame dump. A Python script then queries that database and builds a multi-sheet, formatted Excel report using live formulas (COUNTIF/SUMIF against backing data sheets), so the report recalculates automatically if the underlying data changes — the actual automation deliverable that replaces the manual EHS reporting process.</p>
+<p class="prose">Logging and error handling run throughout every stage of the pipeline for production-adjacent reliability. A bonus Streamlit dashboard sits on top of the same database for interactive exploration.</p>
+</div>
+</section>
+
+<section class="proj-section" id="report">
+<div class="sec-label">Deliverable</div>
+<div class="wrap">
+<div class="sec-title">The <em>report</em></div>
+<p class="prose">The primary output: an 8-sheet Excel workbook — Executive Summary, breakdowns by violation severity, NAICS sub-sector, and state, a ranked list of the most frequently cited OSHA standards, and an open-cases tracker for follow-up.</p>
+<a href="https://github.com/afnanr-exe/Construction-Safety-Maintenance-Data-Automation-Pipeline/blob/main/Construction_Safety_Compliance_Report.xlsx" target="_blank" class="report-block">
+<div class="report-ico">📄</div>
+<div class="report-info">
+<div class="report-title">Construction Safety Compliance Report</div>
+<div class="report-sub">XLSX · Jul 2026</div>
+</div>
+<span class="report-arrow">↗</span>
+</a>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Stack</div>
+<div class="sec-title">Tools & <em>technologies</em></div>
+<div class="stack-grid">
+<span class="chip g">Python</span>
+<span class="chip g">pandas</span>
+<span class="chip g">SQL</span>
+<span class="chip">SQLite</span>
+<span class="chip">openpyxl</span>
+<span class="chip">Streamlit</span>
+<span class="chip">Git</span>
+</div>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Outcome</div>
+<div class="sec-title">Results & <em>learnings</em></div>
+<p class="prose">Automated what would otherwise be a manual, repeated data-pull-and-report process into a single-command pipeline covering 400K+ real records, with zero duplicate/orphaned keys and under 3.2% "unknown" rate across every decoded field — validated at two separate quality-check stages.</p>
+<p class="prose">The biggest lesson carried over from a prior project: document field grain before modeling, not after. Doing that upfront here made the cleaning and schema design far faster and caught several near-100%-null columns before they became dead weight in the database.</p>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+<a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+&nbsp;·&nbsp; afnanr-exe.github.io
+</div>
+</footer>
+</body>
+</html>

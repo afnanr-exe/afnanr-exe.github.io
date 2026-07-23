@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logistics Operations Database Pipeline — Afnan R</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #09080e;
+--surface: #0d0c16;
+--surface2: #11101a;
+--border: #1e1c2a;
+--muted: #2e2a42;
+--dim: #5a5572;
+--text: #b8b4cc;
+--hi: #e8e4f0;
+--gold: #c9a84c;
+--gold-lo: #1a150a;
+--gold-mid: #4a3510;
+--green: #3dba7a;
+--green-lo: #091a10;
+--green-mid: #1a4a2a;
+--serif: 'Cormorant Garamond', Georgia, serif;
+--sans: 'Inter', system-ui, sans-serif;
+--mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+background: var(--bg); color: var(--text);
+font-family: var(--sans); font-size: 16px; line-height: 1.75;
+-webkit-font-smoothing: antialiased;
+}
+nav {
+position: sticky; top: 0; z-index: 100;
+background: rgba(9,8,14,0.92); backdrop-filter: blur(16px);
+border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+max-width: 800px; margin: 0 auto; padding: 0 32px;
+display: flex; align-items: center; justify-content: space-between;
+height: 80px; overflow: visible;
+}
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { display: block; height: 64px; width: auto; }
+.back {
+color: var(--dim); text-decoration: none; font-size: 13px;
+font-family: var(--sans); transition: color 0.2s;
+}
+.back:hover { color: var(--hi); }
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+.proj-header {
+padding: clamp(64px, 10vw, 100px) 0 clamp(48px, 6vw, 72px);
+border-bottom: 1px solid var(--border);
+}
+.eyebrow {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--gold); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.proj-header h1 {
+font-family: var(--serif); font-size: clamp(38px, 7vw, 64px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.5px;
+line-height: 1.0; margin-bottom: 20px;
+}
+.proj-header h1 em { font-style: italic; color: var(--gold); }
+.proj-header p {
+color: var(--text); font-size: clamp(15px, 2vw, 17px);
+max-width: 620px; line-height: 1.85; margin-bottom: 32px;
+}
+.proj-meta {
+display: flex; flex-wrap: wrap; gap: 28px;
+padding: 20px 0; border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border); margin-bottom: 36px;
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label {
+font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+}
+.meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+.meta-val.live { color: var(--green); }
+.proj-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+display: inline-flex; align-items: center; gap: 8px;
+padding: 10px 20px; border-radius: 5px;
+font-family: var(--sans); font-size: 14px; font-weight: 500;
+text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;
+}
+.btn-gold { background: var(--gold); color: #09080e; }
+.btn-gold:hover { background: #e0bf6a; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+.btn-ghost:hover { border-color: var(--dim); color: var(--hi); }
+.proj-section { padding: clamp(44px, 6vw, 72px) 0; border-bottom: 1px solid var(--border); }
+.proj-section:last-of-type { border-bottom: none; }
+.sec-label {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-title {
+font-family: var(--serif); font-size: clamp(24px, 4vw, 36px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px;
+}
+.sec-title em { font-style: italic; color: var(--gold); }
+.prose {
+color: var(--text); font-size: clamp(15px, 2vw, 16px);
+line-height: 1.85; max-width: 680px; font-family: var(--sans);
+}
+.prose + .prose { margin-top: 16px; }
+.prose strong { color: var(--hi); }
+ul.list { margin-top: 12px; padding-left: 20px; max-width: 680px; }
+ul.list li { color: var(--text); font-size: 15px; line-height: 1.8; margin-bottom: 8px; }
+ul.list li strong { color: var(--hi); }
+.stat-grid {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+gap: 16px; margin-top: 24px;
+}
+.stat-box {
+background: var(--surface); border: 1px solid var(--border);
+border-radius: 8px; padding: 16px 18px;
+}
+.stat-num { font-family: var(--mono); font-size: 22px; color: var(--gold); margin-bottom: 4px; }
+.stat-label { font-size: 11px; color: var(--dim); font-family: var(--sans); }
+.code-block {
+background: var(--surface); border: 1px solid var(--border);
+border-radius: 8px; padding: 18px 20px; margin-top: 20px;
+overflow-x: auto; font-family: var(--mono); font-size: 12.5px;
+color: var(--text); line-height: 1.6; white-space: pre;
+}
+.code-label {
+font-size: 11px; color: var(--dim); font-family: var(--sans);
+margin-top: 24px; margin-bottom: 0; letter-spacing: 0.04em;
+text-transform: uppercase;
+}
+.dash-img {
+width: 100%; border-radius: 10px; border: 1px solid var(--border);
+margin-top: 24px; display: block;
+}
+.report-block {
+display: flex; align-items: center; gap: 16px;
+padding: 18px 22px; background: var(--surface);
+border: 1px solid var(--border); border-radius: 8px;
+text-decoration: none; margin-top: 14px; transition: border-color 0.2s;
+}
+.report-block:hover { border-color: var(--muted); }
+.report-ico {
+width: 40px; height: 40px; background: var(--gold-lo);
+border: 1px solid var(--gold-mid); border-radius: 6px;
+display: flex; align-items: center; justify-content: center;
+font-size: 18px; flex-shrink: 0;
+}
+.report-info { flex: 1; }
+.report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+.report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+.report-arrow { color: var(--dim); font-size: 16px; }
+.report-block:hover .report-arrow { color: var(--gold); }
+.stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+font-size: 12px; padding: 4px 11px; border-radius: 4px;
+background: var(--surface); border: 1px solid var(--border);
+color: var(--dim); font-family: var(--mono);
+}
+.chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+footer {
+padding: 32px 0; text-align: center;
+font-size: 12px; color: var(--muted); font-family: var(--sans);
+}
+@media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="../index.html" class="logo">
+<img src="../astar-logo.png" alt="Afnan R" />
+</a>
+<a href="../index.html" class="back">← All projects</a>
+</div>
+</nav>
+
+<header class="proj-header">
+<div class="wrap">
+<div class="eyebrow">Data & Systems Analyst · Databricks · PySpark</div>
+<h1>Logistics Operations <em>Database Pipeline</em></h1>
+<p>An end-to-end Databricks pipeline for a trucking and logistics operational database, built on the medallion architecture and finishing in a live Lakeview dashboard covering driver performance, route profitability, fleet utilization, and safety.</p>
+
+<div class="proj-meta">
+<div class="meta-item">
+<span class="meta-label">Year</span>
+<span class="meta-val">2026</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Domain</span>
+<span class="meta-val">Logistics / Fleet Operations</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Status</span>
+<span class="meta-val live">Complete</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Team</span>
+<span class="meta-val">Solo</span>
+</div>
+</div>
+
+<div class="proj-cta">
+<a href="https://dbc-c9423c09-dd9e.cloud.databricks.com/dashboardsv3/01f1857d7ba9169381c6e27356d89477/published?o=7474649690300465" target="_blank" class="btn btn-gold">View live dashboard ↗</a>
+<a href="#code" class="btn btn-ghost">See the code ↓</a>
+<a href="#findings" class="btn btn-ghost">Key findings ↓</a>
+</div>
+</div>
+</header>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Overview</div>
+<div class="sec-title">What I <em>built</em></div>
+<p class="prose">First project in a three-part Data & Systems Analyst portfolio, built around a trucking and logistics company's operational database: 14 relational tables covering drivers, trucks, trailers, customers, facilities, routes, loads, trips, fuel purchases, maintenance, deliveries, and safety incidents, sourced from Kaggle (yogape/logistics-operations-database). Around 85,000 trips, 196,000 fuel purchases, and 171,000 delivery events.</p>
+<p class="prose">Built on the medallion architecture in Databricks (Bronze → Silver → Gold), using PySpark and Delta Lake tables end to end, then surfaced through a Databricks Lakeview dashboard with five business-facing visuals.</p>
+
+<div class="stat-grid">
+<div class="stat-box"><div class="stat-num">14</div><div class="stat-label">Source tables ingested</div></div>
+<div class="stat-box"><div class="stat-num">85,410</div><div class="stat-label">Trips joined, exact row parity</div></div>
+<div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Gold aggregate tables</div></div>
+<div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Dashboard visuals</div></div>
+</div>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Architecture</div>
+<div class="sec-title">Bronze → Silver → <em>Gold</em></div>
+<p class="prose"><strong>Bronze</strong> (workspace.bronze) holds all 14 raw tables, ingested 1:1 from CSV via PySpark with inferred schema and no transformation, plus lineage columns (_ingested_at, _source_file) added on the way in.</p>
+<p class="prose"><strong>Silver</strong> (workspace.silver) is the cleaned and joined layer. The centerpiece is trips_fact, a star-schema fact table built by joining trips to loads, drivers, trucks, and trailers, with drivers/trucks/trailers/customers/routes acting as the surrounding dimensions. Row count going in matched row count coming out exactly, 85,410 to 85,410, confirming a clean one-to-one join with no fan-out. fuel_purchases and delivery_events were also promoted to Silver, with delivery_events gaining a computed delay_minutes field.</p>
+<p class="prose"><strong>Gold</strong> (workspace.gold) holds five business-ready aggregate tables: driver_performance, route_profitability, truck_utilization, customer_analysis, and safety_metrics, each one feeding directly into a dashboard visual.</p>
+</div>
+</section>
+
+<section class="proj-section" id="code">
+<div class="wrap">
+<div class="sec-label">Code</div>
+<div class="sec-title">Pipeline <em>samples</em></div>
+<p class="prose">Three stages of the pipeline, from raw ingestion through to a business aggregation. Full files are linked below.</p>
+
+<p class="code-label">Bronze — ingestion loop (01_bronze_ingestion.py)</p>
+<div class="code-block">for table in tables:
+    df = (spark.read
+          .option("header", True)
+          .option("inferSchema", True)
+          .csv(f"{volume_path}/{table}.csv")
+          .withColumn("_ingested_at", current_timestamp())
+          .withColumn("_source_file", col("_metadata.file_path")))
+
+    df.write.mode("overwrite").format("delta").saveAsTable(f"{bronze_schema}.{table}")
+    print(f"Loaded {table}: {df.count()} rows")</div>
+
+<p class="code-label">Silver — the trips_fact join (02_silver_transformations.py)</p>
+<div class="code-block">trips_fact = (trips
+    .join(loads.select("load_id", "customer_id", "route_id", "revenue",
+                        "fuel_surcharge", "load_type", "booking_type"),
+          "load_id", "left")
+    .join(drivers.select(col("driver_id"),
+                          col("first_name").alias("driver_first_name"),
+                          col("last_name").alias("driver_last_name")),
+          "driver_id", "left")
+    .join(trucks.select(col("truck_id"),
+                         col("make").alias("truck_make"),
+                         col("model_year").alias("truck_model_year")),
+          "truck_id", "left")
+    .join(trailers.select(col("trailer_id"), col("trailer_type")),
+          "trailer_id", "left")
+)</div>
+
+<p class="code-label">Gold — driver performance aggregation (03_gold_aggregations.py)</p>
+<div class="code-block">driver_perf = (trips_fact.groupBy("driver_id", "driver_first_name", "driver_last_name")
+    .agg(
+        count("trip_id").alias("total_trips"),
+        _sum("actual_distance_miles").alias("total_miles"),
+        avg("average_mpg").alias("avg_mpg"),
+        _sum("revenue").alias("total_revenue"),
+        (_sum("revenue") / _sum("actual_distance_miles")).alias("revenue_per_mile")
+    ))</div>
+
+<div class="report-block" style="margin-top: 24px;">
+<div class="report-ico">📁</div>
+<div class="report-info">
+<div class="report-title">Full pipeline files</div>
+<div class="report-sub">01_bronze_ingestion.py · 02_silver_transformations.py · 03_gold_aggregations.py · 04_dashboard_queries.sql</div>
+</div>
+</div>
+<p class="prose" style="margin-top: 12px; font-size: 13px; color: var(--dim);">
+<a href="../reports/01_bronze_ingestion.py" target="_blank" style="color:var(--gold);">Bronze ↗</a> ·
+<a href="../reports/02_silver_transformations.py" target="_blank" style="color:var(--gold);">Silver ↗</a> ·
+<a href="../reports/03_gold_aggregations.py" target="_blank" style="color:var(--gold);">Gold ↗</a> ·
+<a href="../reports/04_dashboard_queries.sql" target="_blank" style="color:var(--gold);">Dashboard SQL ↗</a> ·
+<a href="../reports/logistics_pipeline_README.md" target="_blank" style="color:var(--gold);">README ↗</a>
+</p>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Dashboard</div>
+<div class="sec-title">Databricks <em>Lakeview</em></div>
+<p class="prose">Five visuals built directly on the Gold layer: top drivers by revenue per mile, route profitability by lane, fleet utilization, customer revenue concentration, and safety incidents (total vs at-fault).</p>
+<img src="../assets/logistics-dashboard.png" alt="Logistics Operations Performance Dashboard" class="dash-img" />
+</div>
+</section>
+
+<section class="proj-section" id="findings">
+<div class="wrap">
+<div class="sec-label">Analysis</div>
+<div class="sec-title">Key <em>findings</em></div>
+<ul class="list">
+<li><strong>Miami → Seattle</strong> is the longest route in the network at 3,229 miles, but carries the lowest base rate per mile at $1.65, a pricing review candidate.</li>
+<li>Fleet utilization is highly consistent across trucks, roughly 1.2M miles each, suggesting balanced load distribution rather than underused assets sitting idle.</li>
+<li>Driver DRV00058 has 9 total safety incidents with 2 at-fault, the highest incident count in the fleet, worth a closer look at root cause versus at-fault ratio.</li>
+<li>Revenue per mile is tightly clustered across top drivers, roughly $2.18 to $2.21, pointing to consistent performance rather than standout outliers.</li>
+</ul>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Decisions</div>
+<div class="sec-title">Technical <em>judgment</em></div>
+<p class="prose">Rate calculations use sum(revenue) / sum(miles) rather than an average of pre-computed per-trip ratios, which avoids a Simpson's-paradox-style distortion where short high-rate trips would otherwise skew the average.</p>
+<p class="prose">Raw files were ingested through Unity Catalog Volumes rather than the deprecated DBFS mount pattern, and input_file_name(), which Unity Catalog does not support, was swapped for _metadata.file_path.</p>
+<p class="prose">A second Kaggle dataset (global supply chain risk) was initially loaded, then evaluated and excluded once it turned out to share no keys or grain with the logistics-ops data. Forcing it in would have meant a fabricated join, so it was left out and documented as a scoping decision instead.</p>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Honesty check</div>
+<div class="sec-title">Limitations</div>
+<p class="prose">No filtering was applied on trip_status, so all trips are included regardless of completion state. No explicit null or duplicate-key validation step was run against the source data before modeling. Both are documented here rather than glossed over, and would be the first things to add in a production version of this pipeline.</p>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Stack</div>
+<div class="sec-title">Tools & <em>technologies</em></div>
+<div class="stack-grid">
+<span class="chip g">Databricks</span>
+<span class="chip g">PySpark</span>
+<span class="chip g">SQL</span>
+<span class="chip">Delta Lake</span>
+<span class="chip">Unity Catalog</span>
+<span class="chip">Lakeview Dashboards</span>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+<a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+&nbsp;·&nbsp; afnanr-exe.github.io
+</div>
+</footer>
+</body>
+</html>

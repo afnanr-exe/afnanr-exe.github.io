@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Construction Cost & Schedule Performance Dashboard — Afnan R</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #09080e;
+--surface: #0d0c16;
+--surface2: #11101a;
+--border: #1e1c2a;
+--muted: #2e2a42;
+--dim: #5a5572;
+--text: #b8b4cc;
+--hi: #e8e4f0;
+--gold: #c9a84c;
+--gold-lo: #1a150a;
+--gold-mid: #4a3510;
+--green: #3dba7a;
+--green-lo: #091a10;
+--green-mid: #1a4a2a;
+--serif: 'Cormorant Garamond', Georgia, serif;
+--sans: 'Inter', system-ui, sans-serif;
+--mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+background: var(--bg); color: var(--text);
+font-family: var(--sans); font-size: 16px; line-height: 1.75;
+-webkit-font-smoothing: antialiased;
+}
+nav {
+position: sticky; top: 0; z-index: 100;
+background: rgba(9,8,14,0.92); backdrop-filter: blur(16px);
+border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+max-width: 800px; margin: 0 auto; padding: 0 32px;
+display: flex; align-items: center; justify-content: space-between;
+height: 80px; overflow: visible;
+}
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { display: block; height: 64px; width: auto; }
+.back {
+color: var(--dim); text-decoration: none; font-size: 13px;
+font-family: var(--sans); transition: color 0.2s;
+}
+.back:hover { color: var(--hi); }
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+.proj-header {
+padding: clamp(64px, 10vw, 100px) 0 clamp(48px, 6vw, 72px);
+border-bottom: 1px solid var(--border);
+}
+.eyebrow {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--gold); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.proj-header h1 {
+font-family: var(--serif); font-size: clamp(38px, 7vw, 64px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.5px;
+line-height: 1.0; margin-bottom: 20px;
+}
+.proj-header h1 em { font-style: italic; color: var(--gold); }
+.proj-header p {
+color: var(--text); font-size: clamp(15px, 2vw, 17px);
+max-width: 620px; line-height: 1.85; margin-bottom: 32px;
+}
+.proj-meta {
+display: flex; flex-wrap: wrap; gap: 28px;
+padding: 20px 0; border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border); margin-bottom: 36px;
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label {
+font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+}
+.meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+.meta-val.live { color: var(--green); }
+.proj-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+display: inline-flex; align-items: center; gap: 8px;
+padding: 10px 20px; border-radius: 5px;
+font-family: var(--sans); font-size: 14px; font-weight: 500;
+text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;
+}
+.btn-gold { background: var(--gold); color: #09080e; }
+.btn-gold:hover { background: #e0bf6a; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+.btn-ghost:hover { border-color: var(--dim); color: var(--hi); }
+.proj-section { padding: clamp(44px, 6vw, 72px) 0; border-bottom: 1px solid var(--border); }
+.proj-section:last-of-type { border-bottom: none; }
+.sec-label {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-title {
+font-family: var(--serif); font-size: clamp(24px, 4vw, 36px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px;
+}
+.sec-title em { font-style: italic; color: var(--gold); }
+.prose {
+color: var(--text); font-size: clamp(15px, 2vw, 16px);
+line-height: 1.85; max-width: 680px; font-family: var(--sans);
+}
+.prose + .prose { margin-top: 16px; }
+.prose strong { color: var(--hi); }
+ul.list { margin-top: 12px; padding-left: 20px; max-width: 680px; }
+ul.list li { color: var(--text); font-size: 15px; line-height: 1.8; margin-bottom: 8px; }
+ul.list li strong { color: var(--hi); }
+.stat-grid {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+gap: 16px; margin-top: 24px;
+}
+.stat-box {
+background: var(--surface); border: 1px solid var(--border);
+border-radius: 8px; padding: 16px 18px;
+}
+.stat-num { font-family: var(--mono); font-size: 22px; color: var(--gold); margin-bottom: 4px; }
+.stat-label { font-size: 11px; color: var(--dim); font-family: var(--sans); }
+.dash-img {
+width: 100%; border-radius: 10px; border: 1px solid var(--border);
+margin-top: 24px; display: block;
+}
+.report-block {
+display: flex; align-items: center; gap: 16px;
+padding: 18px 22px; background: var(--surface);
+border: 1px solid var(--border); border-radius: 8px;
+text-decoration: none; margin-top: 20px; transition: border-color 0.2s;
+}
+.report-block:hover { border-color: var(--muted); }
+.report-ico {
+width: 40px; height: 40px; background: var(--gold-lo);
+border: 1px solid var(--gold-mid); border-radius: 6px;
+display: flex; align-items: center; justify-content: center;
+font-size: 18px; flex-shrink: 0;
+}
+.report-info { flex: 1; }
+.report-title { color: var(--hi); font-size: 14px; margin-bottom: 2px; font-family: var(--sans); }
+.report-sub { color: var(--dim); font-size: 12px; font-family: var(--mono); }
+.report-arrow { color: var(--dim); font-size: 16px; }
+.report-block:hover .report-arrow { color: var(--gold); }
+.stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+font-size: 12px; padding: 4px 11px; border-radius: 4px;
+background: var(--surface); border: 1px solid var(--border);
+color: var(--dim); font-family: var(--mono);
+}
+.chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+footer {
+padding: 32px 0; text-align: center;
+font-size: 12px; color: var(--muted); font-family: var(--sans);
+}
+@media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="../index.html" class="logo">
+<img src="../astar-logo.png" alt="Afnan R" />
+</a>
+<a href="../index.html" class="back">← All projects</a>
+</div>
+</nav>
+
+<header class="proj-header">
+<div class="wrap">
+<div class="eyebrow">Data & Systems Analyst · Power BI · DAX</div>
+<h1>Construction Cost & <em>Schedule Performance</em> Dashboard</h1>
+<p>A Power BI dashboard analyzing cost variance, schedule performance, and risk exposure across a portfolio of 100 construction projects, built on a star-schema data model with 9 custom DAX measures.</p>
+
+<div class="proj-meta">
+<div class="meta-item">
+<span class="meta-label">Year</span>
+<span class="meta-val">2026</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Domain</span>
+<span class="meta-val">Business Intelligence / Construction PM</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Status</span>
+<span class="meta-val live">Complete</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Team</span>
+<span class="meta-val">Solo</span>
+</div>
+</div>
+
+<div class="proj-cta">
+<a href="../reports/Construction_Cost_Schedule_Dashboard.pbix" target="_blank" class="btn btn-gold">Download .pbix ↗</a>
+<a href="#decisions" class="btn btn-ghost">Key decisions ↓</a>
+<a href="#findings" class="btn btn-ghost">Key findings ↓</a>
+</div>
+</div>
+</header>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Overview</div>
+<div class="sec-title">What I <em>built</em></div>
+<p class="prose">Second project in a three-part Data & Systems Analyst portfolio, deliberately built with a different tool and domain than Project 1 (Databricks/PySpark logistics pipeline) to demonstrate range: Power BI Desktop, Power Query, and DAX, applied to construction project delivery instead of logistics.</p>
+<p class="prose">Dataset is 300 rows from Hugging Face (JohnVans123/ProjectManagement): 100 construction projects with 3 tasks each, covering project type, location, schedule, status, priority, hours, budget, actual cost, and progress.</p>
+
+<div class="stat-grid">
+<div class="stat-box"><div class="stat-num">100</div><div class="stat-label">Projects in DimProject</div></div>
+<div class="stat-box"><div class="stat-num">300</div><div class="stat-label">Tasks in FactTasks</div></div>
+<div class="stat-box"><div class="stat-num">9</div><div class="stat-label">Custom DAX measures</div></div>
+<div class="stat-box"><div class="stat-num">-69%</div><div class="stat-label">Cost variance vs budget</div></div>
+</div>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Build</div>
+<div class="sec-title">Data model & <em>dashboard</em></div>
+<p class="prose">Cleaned the raw data in Power Query first: dates were stored DD/MM/YYYY and needed an explicit locale conversion (English UK) to stop them silently misparsing under a US locale, and a couple of numeric columns had reverted to text type and needed correcting.</p>
+<p class="prose">Modeled the cleaned data as a star schema: DimProject (100 rows, project-level attributes) and FactTasks (300 rows, task-level attributes), joined one-to-many on Project ID. On top of that, wrote 9 DAX measures: Cost Variance %, Schedule Variance %, At Risk Tasks and At Risk %, Total Actual Cost, Total Budget, Cost Overrun ($), Total Tasks, and Average Progress.</p>
+<p class="prose">The dashboard itself is a single interactive page: 4 KPI cards, a Budget vs Actual Cost trend by month, a task status breakdown, a Project Type × Region risk heatmap with a conditional-formatting gradient, and a Project Type slicer tying it all together.</p>
+<img src="../assets/cost-schedule-dashboard.png" alt="Construction Cost & Schedule Performance Dashboard" class="dash-img" />
+</div>
+</section>
+
+<section class="proj-section" id="decisions">
+<div class="wrap">
+<div class="sec-label">Judgment</div>
+<div class="sec-title">Key <em>decisions</em></div>
+<p class="prose">I initially assumed Location, End Date, and Priority were project-level fields, the natural assumption for a project-task hierarchy. Checking against the raw data showed they actually vary per task within a project, since one project can span multiple job sites. Rather than force those fields into the project dimension table through deduplication, which would have silently discarded roughly two-thirds of the real values, I kept them at task grain in the fact table instead, preserving 100% of the source data.</p>
+<p class="prose">The dataset also had no planned-vs-actual date fields, so a literal day-count schedule variance would have meant fabricating data that doesn't exist. Instead, Schedule Variance % is built from the dataset's real Project Status field, an honest measure that reflects what the data actually supports rather than a metric that looks more precise than it is.</p>
+</div>
+</section>
+
+<section class="proj-section" id="findings">
+<div class="wrap">
+<div class="sec-label">Analysis</div>
+<div class="sec-title">Key <em>findings</em></div>
+<ul class="list">
+<li>Actual cost ran roughly <strong>69% under budget</strong> dashboard-wide, mostly explained by a high share of not-yet-started tasks sitting at $0 actual cost.</li>
+<li><strong>29%</strong> of tasks belong to projects currently flagged "Behind" schedule.</li>
+<li><strong>15%</strong> of tasks are both behind schedule and high priority, the true at-risk segment.</li>
+<li>The risk heatmap surfaced <strong>Infrastructure projects in Ohio</strong> as the highest concentration of at-risk work in this sample.</li>
+</ul>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Honesty check</div>
+<div class="sec-title">Limitations</div>
+<p class="prose">This is a small, example-style dataset, 100 projects, not live firm data, so findings are illustrative rather than production-grade. There's no contractor or subcontractor field, and Schedule Variance % is a status-derived proxy rather than a true day-level variance, a direct consequence of the source data not including planned dates.</p>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Stack</div>
+<div class="sec-title">Tools & <em>technologies</em></div>
+<div class="stack-grid">
+<span class="chip g">Power BI Desktop</span>
+<span class="chip g">DAX</span>
+<span class="chip g">Power Query</span>
+<span class="chip">Star Schema</span>
+<span class="chip">Data Modeling</span>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+<a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+&nbsp;·&nbsp; afnanr-exe.github.io
+</div>
+</footer>
+</body>
+</html>
