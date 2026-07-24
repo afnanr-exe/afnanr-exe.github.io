@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>I Spent $200 To Prove My Kitchen Is Ruining My Coffee — Afnan R</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #09080e;
+--surface: #0d0c16;
+--surface2: #11101a;
+--border: #1e1c2a;
+--muted: #2e2a42;
+--dim: #5a5572;
+--text: #b8b4cc;
+--hi: #e8e4f0;
+--gold: #c9a84c;
+--gold-lo: #1a150a;
+--gold-mid: #4a3510;
+--green: #3dba7a;
+--green-lo: #091a10;
+--green-mid: #1a4a2a;
+--serif: 'Cormorant Garamond', Georgia, serif;
+--sans: 'Inter', system-ui, sans-serif;
+--mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+background: var(--bg); color: var(--text);
+font-family: var(--sans); font-size: 16px; line-height: 1.75;
+-webkit-font-smoothing: antialiased;
+}
+nav {
+position: sticky; top: 0; z-index: 100;
+background: rgba(9,8,14,0.92); backdrop-filter: blur(16px);
+border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+max-width: 800px; margin: 0 auto; padding: 0 32px;
+display: flex; align-items: center; justify-content: space-between;
+height: 80px; overflow: visible;
+}
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { display: block; height: 64px; width: auto; }
+.back {
+color: var(--dim); text-decoration: none; font-size: 13px;
+font-family: var(--sans); transition: color 0.2s;
+}
+.back:hover { color: var(--hi); }
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+.proj-header {
+padding: clamp(64px, 10vw, 100px) 0 clamp(48px, 6vw, 72px);
+border-bottom: 1px solid var(--border);
+}
+.eyebrow {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--gold); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.proj-header h1 {
+font-family: var(--serif); font-size: clamp(34px, 6vw, 56px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.5px;
+line-height: 1.05; margin-bottom: 20px;
+}
+.proj-header h1 em { font-style: italic; color: var(--gold); }
+.proj-header p {
+color: var(--text); font-size: clamp(15px, 2vw, 17px);
+max-width: 620px; line-height: 1.85; margin-bottom: 32px;
+}
+.proj-meta {
+display: flex; flex-wrap: wrap; gap: 28px;
+padding: 20px 0; border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border); margin-bottom: 36px;
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label {
+font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+}
+.meta-val { font-size: 14px; color: var(--hi); font-family: var(--mono); }
+.meta-val.live { color: var(--green); }
+.proj-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+display: inline-flex; align-items: center; gap: 8px;
+padding: 10px 20px; border-radius: 5px;
+font-family: var(--sans); font-size: 14px; font-weight: 500;
+text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;
+}
+.btn-gold { background: var(--gold); color: #09080e; }
+.btn-gold:hover { background: #e0bf6a; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+.btn-ghost:hover { border-color: var(--dim); color: var(--hi); }
+.proj-section { padding: clamp(44px, 6vw, 72px) 0; border-bottom: 1px solid var(--border); }
+.proj-section:last-of-type { border-bottom: none; }
+.sec-label {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-title {
+font-family: var(--serif); font-size: clamp(24px, 4vw, 36px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.3px; margin-bottom: 18px;
+}
+.sec-title em { font-style: italic; color: var(--gold); }
+.prose {
+color: var(--text); font-size: clamp(15px, 2vw, 16px);
+line-height: 1.85; max-width: 680px; font-family: var(--sans);
+}
+.prose + .prose { margin-top: 16px; }
+.prose strong { color: var(--hi); }
+ul.list { margin-top: 12px; padding-left: 20px; max-width: 680px; }
+ul.list li { color: var(--text); font-size: 15px; line-height: 1.8; margin-bottom: 8px; }
+ul.list li strong { color: var(--hi); }
+.video-wrap {
+position: relative; width: 100%; aspect-ratio: 16/9;
+border-radius: 10px; overflow: hidden;
+border: 1px solid var(--border); margin: 8px 0 0;
+background: var(--surface);
+}
+.video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+table.data-table {
+width: 100%; border-collapse: collapse; margin-top: 20px;
+font-family: var(--mono); font-size: 13px;
+}
+table.data-table th, table.data-table td {
+padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border);
+}
+table.data-table th { color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+table.data-table td { color: var(--text); }
+.stat-grid {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+gap: 16px; margin-top: 24px;
+}
+.stat-box {
+background: var(--surface); border: 1px solid var(--border);
+border-radius: 8px; padding: 16px 18px;
+}
+.stat-num { font-family: var(--mono); font-size: 20px; color: var(--gold); margin-bottom: 4px; }
+.stat-label { font-size: 11px; color: var(--dim); font-family: var(--sans); }
+.code-block {
+background: var(--surface); border: 1px solid var(--border);
+border-radius: 8px; padding: 16px 18px; margin-top: 16px;
+overflow-x: auto; font-family: var(--mono); font-size: 12.5px;
+color: var(--text); line-height: 1.6; white-space: pre;
+}
+.dash-img {
+width: 100%; border-radius: 10px; border: 1px solid var(--border);
+margin-top: 24px; display: block;
+}
+.stack-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+font-size: 12px; padding: 4px 11px; border-radius: 4px;
+background: var(--surface); border: 1px solid var(--border);
+color: var(--dim); font-family: var(--mono);
+}
+.chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+footer {
+padding: 32px 0; text-align: center;
+font-size: 12px; color: var(--muted); font-family: var(--sans);
+}
+@media (max-width: 768px) { .wrap { padding: 0 20px; } .nav-inner { padding: 0 20px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="../index.html" class="logo">
+<img src="../astar-logo.png" alt="Afnan R" />
+</a>
+<a href="../index.html" class="back">← All projects</a>
+</div>
+</nav>
+
+<header class="proj-header">
+<div class="wrap">
+<div class="eyebrow">EE · Embedded · IoT · Data Analysis</div>
+<h1>I Spent $200 To Prove <em>My Kitchen Is Ruining My Coffee</em></h1>
+<p>A controlled science experiment testing whether ambient temperature and humidity affect coffee TDS and extraction yield, using a Keurig as a deliberately controlled brewing variable, an ESP32 sensor node, and a full IoT data pipeline from sensor to SQL analysis.</p>
+
+<div class="proj-meta">
+<div class="meta-item">
+<span class="meta-label">Year</span>
+<span class="meta-val">2026</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Domain</span>
+<span class="meta-val">IoT / Applied Data Science</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Status</span>
+<span class="meta-val live">Complete</span>
+</div>
+<div class="meta-item">
+<span class="meta-label">Team</span>
+<span class="meta-val">Solo</span>
+</div>
+</div>
+
+<div class="proj-cta">
+<a href="https://github.com/afnanr-exe/Ambient-Environment-and-TDS-of-Coffee-Lab" target="_blank" class="btn btn-gold">View on GitHub ↗</a>
+<a href="#video" class="btn btn-ghost">Watch video ↓</a>
+<a href="#results" class="btn btn-ghost">See results ↓</a>
+</div>
+</div>
+</header>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Overview</div>
+<div class="sec-title">What I <em>built</em></div>
+<p class="prose">A controlled experiment testing whether the room a coffee maker sits in changes what ends up in the cup. TDS, Total Dissolved Solids, is the percentage of a coffee drink's mass made up of dissolved coffee compounds, and it's the single most predictive objective measure of coffee quality. A Keurig was used deliberately as the brewing device: it removes every human variable, grind, dose, technique, so any change in the cup is purely environmental.</p>
+<p class="prose">The hypothesis comes from a UC Davis Coffee Center study (Batali, Cotter, Ristenpart, Guinard, 2020), which found that TDS and extraction yield predict taste better than brew temperature alone. If that's true, then anything that shifts TDS, including the ambient conditions the machine sits in, should shift the final cup too.</p>
+<p class="prose"><strong>Short answer: yes.</strong></p>
+
+<div class="stat-grid">
+<div class="stat-box"><div class="stat-num">15</div><div class="stat-label">Brews across 3 rooms</div></div>
+<div class="stat-box"><div class="stat-num">r = 0.69</div><div class="stat-label">Temperature vs TDS correlation</div></div>
+<div class="stat-box"><div class="stat-num">0.616%</div><div class="stat-label">TDS gap, humid vs dry room</div></div>
+<div class="stat-box"><div class="stat-num">12x</div><div class="stat-label">Human detection threshold</div></div>
+</div>
+</div>
+</section>
+
+<section class="proj-section" id="video">
+<div class="wrap">
+<div class="sec-label">YouTube</div>
+<div class="sec-title">Video <em>walkthrough</em></div>
+<p class="prose">Full build, experiment, and results, from soldering the ESP32 to reading the final Pearson correlation.</p>
+<div class="video-wrap">
+<iframe
+src="https://www.youtube.com/embed/ABu5ENo4JN0"
+title="I Spent $200 To Prove My Kitchen Is Ruining My Coffee"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen>
+</iframe>
+</div>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Pipeline</div>
+<div class="sec-title">Hardware & <em>data flow</em></div>
+<p class="prose">An ESP32 DevKit reads ambient temperature and humidity off a DHT22 sensor and shows live readings on an I2C OLED display. After each brew, pressing Enter in the Serial Monitor triggers the ESP32 to read the sensor and POST a JSON payload over WiFi to a Flask server running locally, which logs the reading into SQLite. TDS is measured separately with a digital refractometer and entered through a small CLI script, which calculates extraction yield and updates the same database row.</p>
+<div class="code-block">DHT22 sensor
+    ↓  (press Enter after each brew)
+ESP32 — Arduino C++
+    ↓  (WiFi HTTP POST, JSON payload)
+Python Flask server — server.py
+    ↓  (SQLite insert)
+coffee.db
+    ↓  (manual TDS + weight entry)
+python update.py &lt;brew_id&gt;
+    ↓  (extraction yield calculated)
+DB Browser for SQLite — SQL analysis</div>
+</div>
+</section>
+
+<section class="proj-section" id="results">
+<div class="wrap">
+<div class="sec-label">Experiment</div>
+<div class="sec-title">Protocol & <em>results</em></div>
+<p class="prose">Three rooms, five brews each, fifteen total: a warm baseline room, a humidified room, and a cool room under air conditioning. Two outlier brews with anomalously low TDS were excluded from the final analysis as likely measurement error.</p>
+
+<table class="data-table">
+<tr><th>Room</th><th>Brews</th><th>Avg Temp</th><th>Avg Humidity</th><th>Avg TDS</th><th>Avg Yield</th></tr>
+<tr><td>sistersroom (humid)</td><td>5</td><td>28.0°C</td><td>93.1%</td><td>2.635%</td><td>39.36%</td></tr>
+<tr><td>afnanroom (baseline)</td><td>4</td><td>28.6°C</td><td>57.6%</td><td>2.571%</td><td>35.06%</td></tr>
+<tr><td>ACroom (cool/dry)</td><td>4</td><td>25.9°C</td><td>62.3%</td><td>2.019%</td><td>27.27%</td></tr>
+</table>
+
+<img src="../assets/astar_results.png" alt="TDS by room and correlation charts" class="dash-img" />
+
+<p class="prose" style="margin-top: 20px;">Pearson correlation against TDS came out to r = 0.6941 for ambient temperature and r = 0.3975 for ambient humidity, both excluding the two outlier brews. That was the opposite of the going-in hypothesis, which expected humidity to dominate. Instead, the cool AC room, running 2 to 3°C below the other two, showed the strongest measurable effect on extraction, even with brew temperature held constant by the machine itself.</p>
+<p class="prose">The TDS gap between the humid room and the AC room was 0.616%, about 12 times the roughly 0.05% difference the UC Davis study found trained tasters can detect. Same machine, same pod, same person, different room, and a perceptible, measurable difference in the cup.</p>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Analysis</div>
+<div class="sec-title">SQL <em>work</em></div>
+<p class="prose">All analysis ran directly against the SQLite database. SQLite has no built-in CORR() function, so Pearson's r was computed manually in raw SQL, alongside GROUP BY aggregation by room and CASE-based SCA Golden Cup classification.</p>
+<div class="code-block">-- Pearson r: temperature vs TDS
+SELECT ROUND(
+    (COUNT(*) * SUM(temperature_c * tds_pct) - SUM(temperature_c) * SUM(tds_pct)) /
+    SQRT(
+        (COUNT(*) * SUM(temperature_c*temperature_c) - SUM(temperature_c)*SUM(temperature_c)) *
+        (COUNT(*) * SUM(tds_pct*tds_pct) - SUM(tds_pct)*SUM(tds_pct))
+    ), 4) AS pearson_r_temp_vs_tds
+FROM brews WHERE tds_pct IS NOT NULL;</div>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Stack</div>
+<div class="sec-title">Tools & <em>technologies</em></div>
+<div class="stack-grid">
+<span class="chip g">ESP32 / Arduino C++</span>
+<span class="chip g">Python</span>
+<span class="chip g">Flask</span>
+<span class="chip g">SQLite</span>
+<span class="chip">SQL</span>
+<span class="chip">DHT22</span>
+<span class="chip">I2C / OLED</span>
+<span class="chip">WiFi / HTTP</span>
+</div>
+</div>
+</section>
+
+<section class="proj-section">
+<div class="wrap">
+<div class="sec-label">Outcome</div>
+<div class="sec-title">Results & <em>learnings</em></div>
+<p class="prose">Built a complete IoT pipeline from a bare sensor through to statistical analysis: ESP32 firmware, a REST API, a database schema, a live dashboard, and manual data entry tooling, all feeding a real scientific question with a real answer. The finding itself extends the UC Davis study directly, brew temperature matters less than TDS, but this experiment shows ambient temperature can shift TDS even when the brewer holds its own internal temperature constant.</p>
+<p class="prose">Biggest lesson: the hypothesis going in was wrong. Humidity was expected to dominate; temperature did. Running the correlation honestly, rather than cherry-picking the result that matched the hypothesis, is what actually made the finding interesting.</p>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+<a href="../index.html" style="color:var(--dim);text-decoration:none;">← Back to all projects</a>
+&nbsp;·&nbsp; afnanr-exe.github.io
+</div>
+</footer>
+</body>
+</html>
