@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coffee Fault Detector · Afnan Rahman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+--bg: #09080e;
+--surface: #0d0c16;
+--surface2: #11101a;
+--border: #1e1c2a;
+--muted: #2e2a42;
+--dim: #5a5572;
+--text: #b8b4cc;
+--hi: #e8e4f0;
+--gold: #c9a84c;
+--gold-lo: #1a150a;
+--gold-mid: #4a3510;
+--green: #3dba7a;
+--green-lo: #091a10;
+--green-mid: #1a4a2a;
+--red: #e05555;
+--red-lo: #1a0a0a;
+--red-mid: #4a1a1a;
+--serif: 'Cormorant Garamond', Georgia, serif;
+--sans: 'Inter', system-ui, sans-serif;
+--mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+background: var(--bg);
+color: var(--text);
+font-family: var(--sans);
+font-size: 16px;
+line-height: 1.7;
+-webkit-font-smoothing: antialiased;
+}
+nav {
+position: sticky; top: 0; z-index: 100;
+background: rgba(9,8,14,0.92);
+backdrop-filter: blur(16px);
+border-bottom: 1px solid var(--border);
+overflow: visible;
+}
+.nav-inner {
+max-width: 1100px; margin: 0 auto; padding: 0 32px;
+display: flex; align-items: flex-start; justify-content: space-between;
+height: 80px; overflow: visible;
+}
+.logo { display: flex; align-items: flex-start; text-decoration: none; }
+.logo img { display: block; height: 64px; width: auto; }
+.nav-links { display: flex; gap: 32px; list-style: none; align-items: center; height: 100%; }
+.nav-links a {
+color: var(--dim); text-decoration: none; font-size: 13px;
+font-family: var(--sans); letter-spacing: 0.04em; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--hi); }
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+/* ── Project hero ── */
+.proj-hero {
+padding: clamp(48px, 7vw, 80px) 0 clamp(40px, 6vw, 64px);
+border-bottom: 1px solid var(--border);
+}
+.back-link {
+display: inline-flex; align-items: center; gap: 8px;
+font-size: 13px; color: var(--dim); text-decoration: none;
+font-family: var(--sans); letter-spacing: 0.04em;
+margin-bottom: 32px; transition: color 0.2s;
+}
+.back-link:hover { color: var(--hi); }
+.proj-type {
+font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+color: var(--gold); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+}
+.proj-type::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+.proj-title {
+font-family: var(--serif);
+font-size: clamp(44px, 8vw, 76px);
+font-weight: 700; color: var(--hi);
+line-height: 1.0; letter-spacing: -1px;
+margin-bottom: 32px;
+}
+.proj-title em { font-style: italic; color: var(--green); }
+
+/* ── Problem / Solution ── */
+.ps-grid {
+display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+margin-bottom: 56px; border-radius: 10px; overflow: hidden;
+border: 1px solid var(--border);
+}
+.ps-block { padding: 32px 36px; }
+.ps-block.problem { background: var(--red-lo); border-right: 1px solid var(--border); }
+.ps-block.solution { background: var(--green-lo); }
+.ps-label {
+font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+font-family: var(--sans); margin-bottom: 14px; font-weight: 500;
+}
+.ps-block.problem .ps-label { color: var(--red); }
+.ps-block.solution .ps-label { color: var(--green); }
+.ps-text {
+font-family: var(--serif); font-size: clamp(18px, 2.5vw, 24px);
+font-weight: 600; line-height: 1.4; color: var(--hi);
+}
+@media (max-width: 640px) {
+.ps-grid { grid-template-columns: 1fr; }
+.ps-block.problem { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ── Section ── */
+.section { padding: clamp(48px, 7vw, 80px) 0; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: none; }
+.sec-label {
+font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans);
+display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-title {
+font-family: var(--serif); font-size: clamp(28px, 4vw, 44px);
+font-weight: 700; color: var(--hi); letter-spacing: -0.5px;
+line-height: 1.1; margin-bottom: 32px;
+}
+.sec-title em { font-style: italic; color: var(--gold); }
+
+/* ── Video embed ── */
+.video-wrap {
+position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px;
+}
+.video-wrap iframe {
+position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+border: none;
+}
+
+/* ── How it works cards ── */
+.how-grid {
+display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;
+margin-bottom: 40px;
+}
+.how-card {
+background: var(--surface); border: 1px solid var(--border);
+border-radius: 10px; padding: 24px;
+}
+.how-num {
+font-family: var(--mono); font-size: 11px; color: var(--gold);
+letter-spacing: 0.08em; margin-bottom: 10px;
+}
+.how-title {
+font-family: var(--serif); font-size: 18px; font-weight: 600;
+color: var(--hi); margin-bottom: 8px; line-height: 1.3;
+}
+.how-desc { font-size: 14px; color: var(--text); line-height: 1.65; }
+
+/* ── Code block ── */
+.code-block {
+background: var(--surface2); border: 1px solid var(--border);
+border-radius: 8px; padding: 20px 24px;
+font-family: var(--mono); font-size: 13px; color: var(--text);
+overflow-x: auto; line-height: 1.6; margin: 24px 0;
+}
+.code-label {
+font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+color: var(--dim); font-family: var(--sans); margin-bottom: 8px;
+}
+.code-block .kw { color: var(--gold); }
+.code-block .cm { color: var(--dim); font-style: italic; }
+.code-block .fn { color: var(--green); }
+.code-block .num { color: #c9845a; }
+.code-block .ty { color: #9a7fcf; }
+
+/* ── Screenshots ── */
+.shot-grid {
+display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.shot-wrap {
+border-radius: 10px; overflow: hidden;
+border: 1px solid var(--border);
+background: var(--surface);
+}
+.shot-wrap img { width: 100%; display: block; }
+.shot-caption {
+font-size: 12px; color: var(--dim); font-family: var(--mono);
+padding: 10px 14px; letter-spacing: 0.03em;
+}
+@media (max-width: 640px) {
+.shot-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Stats strip ── */
+.stats-strip {
+display: flex; gap: 2px; margin: 40px 0;
+border-radius: 10px; overflow: hidden; border: 1px solid var(--border);
+}
+.stat-block {
+flex: 1; padding: 24px; background: var(--surface); text-align: center;
+border-right: 1px solid var(--border);
+}
+.stat-block:last-child { border-right: none; }
+.stat-val {
+font-family: var(--serif); font-size: 32px; font-weight: 700;
+color: var(--hi); line-height: 1.1; margin-bottom: 4px;
+}
+.stat-val.green { color: var(--green); }
+.stat-val.gold { color: var(--gold); }
+.stat-lbl { font-size: 11px; color: var(--dim); font-family: var(--mono); letter-spacing: 0.06em; }
+.stat-note { font-size: 10px; color: var(--muted); font-family: var(--mono); letter-spacing: 0.04em; margin-top: 4px; }
+@media (max-width: 640px) {
+.stats-strip { flex-direction: column; }
+.stat-block { border-right: none; border-bottom: 1px solid var(--border); }
+.stat-block:last-child { border-bottom: none; }
+}
+
+/* ── Process steps ── */
+.process-list { display: flex; flex-direction: column; gap: 0; }
+.process-step {
+display: flex; gap: 24px; padding: 24px 0;
+border-bottom: 1px solid var(--border);
+}
+.process-step:last-child { border-bottom: none; }
+.step-num {
+font-family: var(--mono); font-size: 11px; color: var(--gold);
+letter-spacing: 0.08em; padding-top: 2px; flex-shrink: 0; width: 32px;
+}
+.step-body { flex: 1; }
+.step-title {
+font-family: var(--serif); font-size: 18px; font-weight: 600;
+color: var(--hi); margin-bottom: 6px;
+}
+.step-desc { font-size: 14px; color: var(--text); line-height: 1.65; }
+
+/* ── Stack chips ── */
+.stack-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.chip {
+font-size: 12px; padding: 5px 12px; border-radius: 3px;
+background: var(--surface); border: 1px solid var(--border);
+color: var(--dim); font-family: var(--mono);
+}
+.chip.g { border-color: var(--green-mid); color: var(--green); background: var(--green-lo); }
+.chip.gold { border-color: var(--gold-mid); color: var(--gold); background: var(--gold-lo); }
+
+/* ── Limits callout ── */
+.limits-box {
+background: var(--surface); border: 1px solid var(--border);
+border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0;
+padding: 20px 24px; margin-top: 32px;
+}
+.limits-title {
+font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+color: var(--gold); font-family: var(--sans); margin-bottom: 10px;
+}
+.limits-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.limits-list li {
+font-size: 14px; color: var(--text); font-family: var(--sans);
+display: flex; align-items: flex-start; gap: 10px;
+}
+.limits-list li::before { content: '·'; color: var(--dim); flex-shrink: 0; }
+
+/* ── Inline note box ── */
+.note-box {
+background: var(--surface); border: 1px solid var(--border);
+border-left: 3px solid var(--green-mid); border-radius: 0 8px 8px 0;
+padding: 16px 20px; margin-top: 20px;
+font-size: 14px; color: var(--text); line-height: 1.65;
+}
+
+/* ── Links row ── */
+.links-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+.btn {
+display: inline-flex; align-items: center; gap: 8px;
+padding: 10px 20px; border-radius: 5px;
+font-family: var(--sans); font-size: 14px; font-weight: 500;
+text-decoration: none; border: none; cursor: pointer; transition: all 0.2s;
+}
+.btn-gold { background: var(--gold); color: #09080e; }
+.btn-gold:hover { background: #e0bf6a; }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+.btn-ghost:hover { border-color: var(--dim); color: var(--hi); }
+
+footer {
+padding: 32px 0; text-align: center;
+font-size: 12px; color: var(--muted); font-family: var(--sans);
+}
+@media (max-width: 1024px) { .wrap { padding: 0 24px; } .nav-inner { padding: 0 24px; } }
+@media (max-width: 560px) { .wrap { padding: 0 18px; } .nav-inner { padding: 0 18px; } }
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="../index.html" class="logo">
+<img src="../astar-logo.png" alt="Afnan R" />
+</a>
+<ul class="nav-links">
+<li><a href="../index.html#projects">Projects</a></li>
+<li><a href="../index.html#skills">Skills</a></li>
+<li><a href="../index.html#contact">Contact</a></li>
+<li><a href="../resume.pdf" target="_blank">Resume ↗</a></li>
+</ul>
+</div>
+</nav>
+
+<div class="proj-hero">
+<div class="wrap">
+<a href="../index.html#projects" class="back-link">← Back to projects</a>
+<div class="proj-type">EE · Embedded · Fault Detection</div>
+<h1 class="proj-title">Coffee Fault<br><em>Detector</em></h1>
+
+<div class="ps-grid">
+<div class="ps-block problem">
+<div class="ps-label">The Problem</div>
+<p class="ps-text">Appliances give no warning before they fail or misbehave. They either work or they do not. Your coffee machine could brew a weaker cup, draw less power than it should, or cut out early and you would never know.</p>
+</div>
+<div class="ps-block solution">
+<div class="ps-label">The Solution</div>
+<p class="ps-text">A cheap sensor on the power cord can learn what a normal brew draws and speak up when something is off. An ESP32 clamps onto the Keurig's power line, builds a statistical model from 5 real brews, and flags anything that deviates from that signature in real time.</p>
+</div>
+</div>
+</div>
+</div>
+
+<section class="section">
+<div class="wrap">
+<div class="sec-label">Watch</div>
+<h2 class="sec-title">The <em>video</em></h2>
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/XnmKtdSLb9w" title="Coffee Fault Detector" allowfullscreen loading="lazy"></iframe>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+<div class="sec-label">How It Works</div>
+<h2 class="sec-title">From current clamp<br>to <em>fault alert</em></h2>
+<p style="font-size:15px; color:var(--text); max-width:680px; margin-bottom:16px; line-height:1.8;">
+The detector uses no machine learning. With only 5 learned brews and one sensor, the right tool is statistics. It is the same approach real industrial condition monitoring starts with: measure normal, set a tolerance from the spread of your samples, and flag what falls outside it.
+</p>
+<p style="font-size:15px; color:var(--text); max-width:680px; margin-bottom:36px; line-height:1.8;">
+I evaluated seven approaches: threshold limits, statistical process control (SPC), signature analysis, model-based detection, trend monitoring (CUSUM/EWMA), ML anomaly detection, and redundancy. SPC plus signature analysis fit the constraints. ML requires far more than 5 samples and would not run reliably on an ESP32.
+</p>
+
+<div class="how-grid">
+<div class="how-card">
+<div class="how-num">01</div>
+<div class="how-title">Learn 5 brews</div>
+<p class="how-desc">Press "Learn a brew" five times. The ESP32 records each brew's peak current, total energy in Wh, length in seconds, and a per-second current trace up to 160 seconds long. No data leaves the device.</p>
+</div>
+<div class="how-card">
+<div class="how-num">02</div>
+<div class="how-title">Build a model</div>
+<p class="how-desc">Peak and energy use the median across the 5 brews, not the mean, so one cold-start outlier does not skew the model. Tolerance is set from the half-range spread of the samples, clamped between 8 and 40 percent.</p>
+</div>
+<div class="how-card">
+<div class="how-num">03</div>
+<div class="how-title">Draw a curve band</div>
+<p class="how-desc">The trace is split into 4-second bins, 40 bins across 160 seconds. For each bin the system stores the min and max current across all 5 brews. During a live brew, 3 consecutive readings outside any bin's band triggers a fault. Three in a row ignores single-second dropouts the Keurig produces normally.</p>
+</div>
+<div class="how-card">
+<div class="how-num">04</div>
+<div class="how-title">Check end-of-brew</div>
+<p class="how-desc">After the machine stops, peak and energy are compared against the model. A brew that ended early but stayed inside the live band still fails here if total energy is too low. If the machine went quiet 3 or more seconds before Stop was pressed, the energy check still runs.</p>
+</div>
+<div class="how-card">
+<div class="how-num">05</div>
+<div class="how-title">Alert and log</div>
+<p class="how-desc">A fault banner appears on the web dashboard. A voice alert fires through a DFPlayer Mini and speaker: "I'qilha wa tawakkal" (Arabic: tie up your camel, then trust in God). The fault type and brew data are logged in flash memory.</p>
+</div>
+<div class="how-card">
+<div class="how-num">06</div>
+<div class="how-title">Persist across power cycles</div>
+<p class="how-desc">The model, curve band, and last fault are saved to ESP32 flash using the Preferences API. The raw 5 brew traces are not stored, only the derived model, to fit within flash memory limits.</p>
+</div>
+</div>
+
+<div class="sec-label" style="margin-top:48px;">Signal Conditioning</div>
+<h3 class="sec-title" style="font-size: clamp(22px, 3vw, 32px);">Getting AC current into an ESP32 <em>ADC</em></h3>
+<p style="font-size:15px; color:var(--text); max-width:680px; margin-bottom:28px; line-height:1.8;">
+The SCT-013-005 split-core clamp outputs a small AC signal proportional to current, swinging above and below zero. The ESP32 ADC only accepts 0 to 3.3 V. Two stages of analog conditioning bridge that gap.
+</p>
+
+<div class="how-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:32px;">
+<div class="how-card">
+<div class="how-num">Bias Network</div>
+<div class="how-title">1.65 V midpoint</div>
+<p class="how-desc">Two 10 k&#x3A9; resistors from 3.3 V to GND create a 1.65 V virtual ground. The AC signal from the clamp is coupled through a 10 µF capacitor and rides on this midpoint, keeping the full waveform inside the ADC's 0 to 3.3 V range.</p>
+</div>
+<div class="how-card">
+<div class="how-num">Attenuation Divider</div>
+<div class="how-title">Scale to ADC range</div>
+<p class="how-desc">From the Keurig nameplate: 1500 W / 120 V = 12.5 A, with a 15 A margin the peak is 4.24 V at the clamp (5 A per V). A 10k/10k divider (ratio 0.5) would clip near 11.7 A. A 5.1 k&#x3A9; / 10 k&#x3A9; divider (ratio 0.338) keeps the peak safely within ADC limits. Result: 14.8 A per V at the pin.</p>
+</div>
+</div>
+
+<div class="shot-grid">
+<div class="shot-wrap">
+<img src="../assets/cfd-bias-network.png" alt="Bias network circuit diagram" />
+<div class="shot-caption">Bias network: 10k&#x3A9; divider sets 1.65 V midpoint, 10 µF AC coupling cap</div>
+</div>
+<div class="shot-wrap">
+<img src="../assets/cfd-attenuation.png" alt="Attenuation divider math" />
+<div class="shot-caption">Attenuation math: nameplate to divider ratio, 15 A margin, 0.338 ratio chosen</div>
+</div>
+</div>
+
+<div style="margin-top:36px;">
+<div class="code-label">True RMS reading (from the sketch)</div>
+<div class="code-block">
+<span class="kw">float</span> <span class="fn">readCurrentAmps</span>() {<br>
+&nbsp;&nbsp;<span class="kw">double</span> sum = <span class="num">0</span>;<br>
+&nbsp;&nbsp;<span class="kw">double</span> sumSq = <span class="num">0</span>;<br>
+&nbsp;&nbsp;<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; SAMPLES_PER_READING; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">double</span> voltage = <span class="fn">analogRead</span>(CT_PIN) * (VREF / ADC_MAX);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sum += voltage;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sumSq += voltage * voltage;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">delayMicroseconds</span>(<span class="num">150</span>); <span class="cm">// spreads samples across a few AC cycles</span><br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="kw">double</span> mean = sum / SAMPLES_PER_READING;<br>
+&nbsp;&nbsp;<span class="kw">double</span> variance = sumSq / SAMPLES_PER_READING - mean * mean;<br>
+&nbsp;&nbsp;<span class="kw">if</span> (variance &lt; <span class="num">0</span>) variance = <span class="num">0</span>;<br>
+&nbsp;&nbsp;<span class="kw">return</span> <span class="fn">sqrt</span>(variance) * AMPS_PER_VOLT; <span class="cm">// 14.8 A per V</span><br>
+}
+</div>
+
+<div class="code-label" style="margin-top:24px;">Learned tolerance — the SPC part</div>
+<div class="code-block">
+<span class="kw">float</span> <span class="fn">toleranceFrom</span>(<span class="kw">const float</span>* v, <span class="kw">int</span> n, <span class="kw">float</span> center) {<br>
+&nbsp;&nbsp;<span class="kw">if</span> (n &lt; <span class="num">2</span> || center &lt; <span class="num">0.01</span>) <span class="kw">return</span> <span class="num">0.20</span>;<br>
+&nbsp;&nbsp;<span class="kw">float</span> lo = v[<span class="num">0</span>], hi = v[<span class="num">0</span>];<br>
+&nbsp;&nbsp;<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (v[i] &lt; lo) lo = v[i];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (v[i] &gt; hi) hi = v[i];<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="kw">float</span> tol = SPREAD_MULT * ((hi - lo) / <span class="num">2.0</span>) / center;<br>
+&nbsp;&nbsp;<span class="kw">if</span> (tol &lt; MIN_TOL) tol = MIN_TOL; <span class="cm">// floor: 0.08</span><br>
+&nbsp;&nbsp;<span class="kw">if</span> (tol &gt; MAX_TOL) tol = MAX_TOL; <span class="cm">// ceiling: 0.40</span><br>
+&nbsp;&nbsp;<span class="kw">return</span> tol;<br>
+}
+</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+<div class="sec-label">Dashboard</div>
+<h2 class="sec-title">Live in the <em>browser</em></h2>
+<p style="font-size:15px; color:var(--text); max-width:680px; margin-bottom:36px; line-height:1.8;">
+The ESP32 runs its own web server over WiFi. The dashboard is a self-contained HTML page served directly from flash. No external resources, no cloud. Connect your phone, see the live current and fault history.
+</p>
+
+<div class="shot-grid" style="margin-bottom: 16px;">
+<div class="shot-wrap">
+<img src="../assets/cfd-dashboard-ok.png" alt="Dashboard showing Brew OK" />
+<div class="shot-caption">Normal brew: 0.04 A idle, model at 11.17 A, "Brew OK" logged</div>
+</div>
+<div class="shot-wrap">
+<img src="../assets/cfd-dashboard-fault.png" alt="Dashboard showing fault detected" />
+<div class="shot-caption">Fault detected: "Brew used too little energy (Low energy)" banner</div>
+</div>
+</div>
+<div class="shot-wrap" style="margin-bottom: 32px;">
+<img src="../assets/cfd-hardware.png" alt="ESP32 on breadboard" />
+<div class="shot-caption">ESP32 Dev Module on breadboard with current clamp wired to GPIO34</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+<div class="sec-label">Results</div>
+<h2 class="sec-title">What it <em>caught</em></h2>
+
+<p style="font-size:13px; color:var(--dim); font-family:var(--mono); letter-spacing:0.04em; margin-bottom:12px; text-transform:uppercase;">Real machine tests</p>
+<div class="stats-strip" style="margin-top:0;">
+<div class="stat-block">
+<div class="stat-val green">2 / 3</div>
+<div class="stat-lbl">live power cuts caught</div>
+</div>
+<div class="stat-block">
+<div class="stat-val green">3 / 3</div>
+<div class="stat-lbl">normal brews passed</div>
+<div class="stat-note">0 false alarms</div>
+</div>
+<div class="stat-block">
+<div class="stat-val gold">6 / 6</div>
+<div class="stat-lbl">held-out brews accepted</div>
+<div class="stat-note">leave-one-out replay</div>
+</div>
+<div class="stat-block">
+<div class="stat-val gold">6 / 6</div>
+<div class="stat-lbl">weak-heater faults caught</div>
+<div class="stat-note">replay on real data</div>
+</div>
+</div>
+
+<p style="font-size:13px; color:var(--dim); font-family:var(--mono); letter-spacing:0.04em; margin-top:24px; margin-bottom:12px; text-transform:uppercase;">Simulation only (C++ harness, synthetic faults)</p>
+<div class="stats-strip" style="margin-top:0; margin-bottom:32px;">
+<div class="stat-block">
+<div class="stat-val" style="color:var(--dim);">80 / 80</div>
+<div class="stat-lbl">simulated faults caught</div>
+<div class="stat-note">not real brews</div>
+</div>
+</div>
+
+<p style="font-size:15px; color:var(--text); max-width:680px; margin-bottom:28px; line-height:1.8;">
+The missed power cut happened very late in the second heat phase, when the brew was nearly complete and the energy was only 12 percent below normal. Tighter limits would catch it but would also raise false alarms as the machine warms up across brews. That is a deliberate trade-off.
+</p>
+
+<div class="limits-box">
+<div class="limits-title">Known limits</div>
+<ul class="limits-list">
+<li>5 learned brews, 3 live cuts tested, one machine. This is a proof of concept.</li>
+<li>Cuts in the last third of the second heat phase cannot be caught without raising false alarms.</li>
+<li>Energy tolerance is set at 30 percent minimum because energy drifts as the machine warms up across brews (9.9 Wh cold start down to 6.4 Wh by the fifth brew).</li>
+<li>The 14.8 A per V scale factor was not checked against a reference meter. Readings are accurate in shape, not in absolute amps.</li>
+<li>The plug-in startup cycle is flagged as a short brew. This is a known quirk, not a detection failure.</li>
+<li>Cannot detect slow-developing faults like scale buildup. That would need trend monitoring over weeks of data.</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+<div class="sec-label">Process</div>
+<h2 class="sec-title">How it got <em>built</em></h2>
+
+<div class="process-list">
+<div class="process-step">
+<div class="step-num">01</div>
+<div class="step-body">
+<div class="step-title">Measure the machine first</div>
+<p class="step-desc">Before writing any detection logic, the Keurig's current signature was recorded and characterized. Heater draws 11.0 to 11.3 A, pump draws about 4 A, idle is 0.04 to 0.08 A. A warm brew runs two heat bursts with a pause in between, then a pump tail. A cold start runs the heater for about 70 seconds straight, drawing 32.6 Wh.</p>
+</div>
+</div>
+<div class="process-step">
+<div class="step-num">02</div>
+<div class="step-body">
+<div class="step-title">Design the analog front-end from the nameplate</div>
+<p class="step-desc">The divider ratio was calculated before any experiment. From the nameplate: 1500 W / 120 V = 12.5 A. With a 15 A safety margin, the clamp peak is 4.24 V. A 10k/10k divider would clip at 11.7 A. A 5.1 k&#x3A9; / 10 k&#x3A9; divider (ratio 0.338) stays safely within ADC limits at any realistic current level.</p>
+</div>
+</div>
+<div class="process-step">
+<div class="step-num">03</div>
+<div class="step-body">
+<div class="step-title">Build the firmware in stages</div>
+<p class="step-desc">12 versions across roughly 3,000 lines of Arduino C++. Each version fixed a real bug found during testing: pump bursts before the brew counted as a fake brew and poisoned the model; the Stop button skipped the energy check so early cuts were missed; the dashboard hung on a guest network because of an external font stylesheet. Real data found all of these.</p>
+</div>
+</div>
+<div class="process-step">
+<div class="step-num">04</div>
+<div class="step-body">
+<div class="step-title">Write a C++ simulation harness</div>
+<p class="step-desc">Testing on real hardware meant waiting for each brew. A C++ harness replaced Arduino, WiFi, WebServer, and Preferences with stubs so the detection logic could run on a laptop against synthetic and recorded traces. 80 simulated faults were injected, covering weak heaters, early cuts, and low-energy brews. A bug where the event counter saturated and made later detections look like zero was found and fixed this way.</p>
+</div>
+</div>
+<div class="process-step">
+<div class="step-num">05</div>
+<div class="step-body">
+<div class="step-title">Validate on real data with leave-one-out</div>
+<p class="step-desc">Six real brew traces were recorded and exported as CSV. Leave-one-out: learn on 5, test on the held-out 6th, repeat for all 6. Fault injection scaled the heater current to 7, 8.5, and 10 A and truncated brews at various points. A bug where Stop silently skipped the energy check was found in replay and fixed in the final version.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+<div class="sec-label">Stack</div>
+<h2 class="sec-title">Built <em>with</em></h2>
+<div class="stack-row">
+<span class="chip g">C++ (Arduino / ESP32)</span>
+<span class="chip g">SCT-013-005 split-core clamp</span>
+<span class="chip g">True RMS ADC sensing</span>
+<span class="chip g">Statistical Process Control</span>
+<span class="chip g">Signature analysis</span>
+<span class="chip">SSD1306 OLED (I2C)</span>
+<span class="chip">DFPlayer Mini + speaker</span>
+<span class="chip">ESP32 WebServer</span>
+<span class="chip">ESP32 Preferences (flash)</span>
+<span class="chip">HTML / CSS / JS dashboard</span>
+<span class="chip">C++ simulation harness</span>
+<span class="chip">Leave-one-out validation</span>
+</div>
+
+<div class="links-row">
+<a href="https://youtu.be/XnmKtdSLb9w" target="_blank" class="btn btn-gold">Watch on YouTube ↗</a>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="wrap">afnanr-exe.github.io · <span id="yr"></span></div>
+</footer>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>
