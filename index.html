@@ -419,6 +419,7 @@
       <button class="filter-btn" data-filter="software">Software</button>
       <button class="filter-btn" data-filter="ee">Electrical Eng</button>
       <button class="filter-btn" data-filter="ml">ML / AI</button>
+      <button class="filter-btn" data-filter="data">Data Analytics</button>
     </div>
 
     <div class="project-grid">
@@ -437,6 +438,24 @@
           <div class="card-icons">
             <span class="icon-badge has">▶ vid</span>
             <span class="icon-badge">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/astar-coffee-experiment.html" class="project-card reveal"
+         data-tags="ee,software,data" data-has-video="true" data-has-report="true">
+        <img src="https://img.youtube.com/vi/ABu5ENo4JN0/maxresdefault.jpg" alt="I Spent $200 To Prove My Kitchen Is Ruining My Coffee" class="card-thumb" />
+        <div class="card-type">EE · IoT · Data Analysis</div>
+        <div class="card-title">I Spent $200 To Prove My Kitchen Is Ruining My Coffee</div>
+        <div class="card-desc">A controlled experiment testing whether ambient temperature and humidity affect coffee TDS and extraction yield, using an ESP32 sensor node, a Flask + SQLite pipeline, and Pearson correlation analysis in raw SQL.</div>
+        <div class="card-meta">
+          <span class="chip g">ESP32</span>
+          <span class="chip g">Flask</span>
+          <span class="chip g">SQLite</span>
+          <span class="chip">SQL</span>
+          <div class="card-icons">
+            <span class="icon-badge has">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
           </div>
         </div>
       </a>
@@ -476,6 +495,60 @@
         </div>
       </a>
 
+      <a href="projects/logistics-pipeline.html" class="project-card reveal"
+         data-tags="data,software" data-has-video="false" data-has-report="true">
+        <img src="assets/logistics-dashboard.png" alt="Logistics Operations Performance Dashboard" class="card-thumb" />
+        <div class="card-type">Data Analyst · Databricks · PySpark</div>
+        <div class="card-title">Logistics Operations Database Pipeline</div>
+        <div class="card-desc">An end-to-end medallion pipeline (Bronze to Silver to Gold) for a trucking company's operational database. 85K+ trips, a star-schema fact table, and a live Lakeview dashboard covering driver performance, route profitability, and safety.</div>
+        <div class="card-meta">
+          <span class="chip g">Databricks</span>
+          <span class="chip g">PySpark</span>
+          <span class="chip g">SQL</span>
+          <span class="chip">Delta Lake</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/cost-schedule-dashboard.html" class="project-card reveal"
+         data-tags="data,software" data-has-video="false" data-has-report="true">
+        <img src="assets/cost-schedule-dashboard.png" alt="Construction Cost & Schedule Performance Dashboard" class="card-thumb" />
+        <div class="card-type">Data Analyst · Power BI · DAX</div>
+        <div class="card-title">Construction Cost & Schedule Performance Dashboard</div>
+        <div class="card-desc">A Power BI dashboard analyzing cost variance, schedule performance, and risk exposure across 100 construction projects. Star-schema data model, 9 custom DAX measures, and a risk heatmap surfacing at-risk work by type and region.</div>
+        <div class="card-meta">
+          <span class="chip g">Power BI</span>
+          <span class="chip g">DAX</span>
+          <span class="chip g">Power Query</span>
+          <span class="chip">Star Schema</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/osha-safety-pipeline.html" class="project-card reveal"
+         data-tags="data,software" data-has-video="false" data-has-report="true">
+        <div class="card-type">Data Analyst · Python · SQL</div>
+        <div class="card-title">Construction Safety Data Automation Pipeline</div>
+        <div class="card-desc">Construction EHS teams build safety compliance reports by hand from OSHA data every reporting period. This pipeline automates the whole thing: 151K+ real inspections and 256K+ violations, cleaned and loaded into SQL, ending in a single-command formatted Excel report.</div>
+        <div class="card-meta">
+          <span class="chip g">Python</span>
+          <span class="chip g">pandas</span>
+          <span class="chip g">SQL</span>
+          <span class="chip">SQLite</span>
+          <span class="chip">openpyxl</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
       <a href="projects/renewable-forecaster.html" class="project-card reveal"
          data-tags="ee,ml,software" data-has-video="false" data-has-report="true">
         <img src="assets/forecaster-forecast.jpg" alt="Renewable Energy Forecaster" class="card-thumb" />
@@ -494,16 +567,82 @@
         </div>
       </a>
 
-      <a href="projects/project-four.html" class="project-card reveal"
-         data-tags="ee,ml" data-has-video="true" data-has-report="true">
-        <div class="card-type">EE · ML</div>
-        <div class="card-title">Project Four Title</div>
-        <div class="card-desc">One or two sentences on what this does and why it matters.</div>
+      <a href="projects/robot-guidance.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · Embedded · Assembly</div>
+        <div class="card-title">Robot Guidance Challenge</div>
+        <div class="card-desc">Programmed the eebot mobile robot in 68HC11 assembly to autonomously navigate a maze: sensor-based heading correction, bumper-triggered reversing, and a finite state machine driving the whole run.</div>
         <div class="card-meta">
-          <span class="chip">MATLAB</span>
-          <span class="chip">Simulink</span>
+          <span class="chip g">Assembly</span>
+          <span class="chip">CodeWarrior</span>
+          <span class="chip">FSM</span>
           <div class="card-icons">
-            <span class="icon-badge has">▶ vid</span>
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/p2p-file-sharing.html" class="project-card reveal"
+         data-tags="software" data-has-video="false" data-has-report="true">
+        <div class="card-type">Software · Networking</div>
+        <div class="card-title">P2P File-Sharing Application</div>
+        <div class="card-desc">Built an index-server-and-peers file sharing system from raw sockets: UDP for fast registration and search, TCP for reliable peer-to-peer file transfer.</div>
+        <div class="card-meta">
+          <span class="chip g">C</span>
+          <span class="chip">UDP</span>
+          <span class="chip">TCP</span>
+          <span class="chip">Sockets</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/igbt-inverter.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · Power Electronics</div>
+        <div class="card-title">IGBT Inverter & Motor Drive</div>
+        <div class="card-desc">Characterized a three-phase IGBT inverter under square-wave and PWM switching, then used it to drive a real induction motor under V/F control, comparing measured results against theory.</div>
+        <div class="card-meta">
+          <span class="chip g">Power Electronics</span>
+          <span class="chip">PWM</span>
+          <span class="chip">V/F Control</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/cmos-full-adder.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · IC Design</div>
+        <div class="card-title">CMOS 1-Bit Full Adder</div>
+        <div class="card-desc">Derived, sized with the logical effort method, and laid out a CMOS full adder in Cadence, then verified it end to end with DRC, LVS, and post-layout parasitic extraction.</div>
+        <div class="card-meta">
+          <span class="chip g">Cadence</span>
+          <span class="chip">Logical Effort</span>
+          <span class="chip">DRC / LVS</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
+            <span class="icon-badge has">📄 doc</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="projects/pid-servo-control.html" class="project-card reveal"
+         data-tags="ee" data-has-video="false" data-has-report="true">
+        <div class="card-type">EE · Control Systems</div>
+        <div class="card-title">PID Servo Compensation</div>
+        <div class="card-desc">Tuned a servo position controller from proportional-only through PID with anti-windup, then validated the tuning on real hardware to see exactly where simulation and reality diverge.</div>
+        <div class="card-meta">
+          <span class="chip g">MATLAB / Simulink</span>
+          <span class="chip">PID</span>
+          <span class="chip">Step Response</span>
+          <div class="card-icons">
+            <span class="icon-badge">▶ vid</span>
             <span class="icon-badge has">📄 doc</span>
           </div>
         </div>
